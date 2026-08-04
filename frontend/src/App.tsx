@@ -58,6 +58,27 @@ export function App() {
   dateWithSecs.setSeconds(selectedSecond);
   const finalSnappedDate = clampDate(snapToEvenSeconds(dateWithSecs));
 
+  // Quick Preset Helper Functions
+  const applyPreset = (presetType: 'now' | 'yesterday' | 'week' | 'month' | 'year') => {
+    const now = new Date();
+    if (presetType === 'now') {
+      setTargetDateTimeStr(formatForDateTimeInput(now));
+      setSelectedSecond(now.getSeconds());
+    } else if (presetType === 'yesterday') {
+      now.setDate(now.getDate() - 1);
+      setTargetDateTimeStr(formatForDateTimeInput(now));
+    } else if (presetType === 'week') {
+      now.setDate(now.getDate() - 7);
+      setTargetDateTimeStr(formatForDateTimeInput(now));
+    } else if (presetType === 'month') {
+      now.setMonth(now.getMonth() - 1);
+      setTargetDateTimeStr(formatForDateTimeInput(now));
+    } else if (presetType === 'year') {
+      now.setFullYear(now.getFullYear() - 1);
+      setTargetDateTimeStr(formatForDateTimeInput(now));
+    }
+  };
+
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -195,7 +216,7 @@ export function App() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Sleek Minimalist Header */}
+      {/* Header Navigation */}
       <header role="banner" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', background: 'rgba(11, 15, 25, 0.8)', backdropFilter: 'blur(12px)', position: 'sticky', top: 0, zIndex: 50 }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -232,9 +253,9 @@ export function App() {
       </header>
 
       {/* Main Container */}
-      <main id="main-content" role="main" style={{ flex: 1, maxWidth: '1000px', width: '100%', margin: '0 auto', padding: '40px 24px' }}>
+      <main id="main-content" role="main" style={{ flex: 1, maxWidth: '1000px', width: '100%', margin: '0 auto', padding: '36px 24px' }}>
         
-        {/* Sleek Hero Title */}
+        {/* Hero Section */}
         <section aria-labelledby="hero-heading" style={{ textAlign: 'center', marginBottom: '32px' }}>
           <h1 id="hero-heading" style={{ fontSize: '2.1rem', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: '8px', color: '#f9fafb' }}>
             {t.heroTitle}
@@ -246,14 +267,14 @@ export function App() {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           
-          {/* Top Panel: File Upload & Date Picker Grid */}
+          {/* Top Panel: File Upload & High-Visibility Date Picker */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
             
-            {/* Left Card: File Uploader */}
+            {/* Left Card: File Uploader (STEP 1) */}
             <article className="glass-panel" style={{ padding: '20px' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-                <h2 style={{ fontSize: '1rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <UploadCloud style={{ color: '#818cf8', width: '18px', height: '18px' }} />
+                <h2 style={{ fontSize: '0.95rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', color: '#818cf8' }}>
+                  <UploadCloud style={{ width: '18px', height: '18px' }} />
                   {t.uploadTitle}
                 </h2>
                 {files.length > 0 && (
@@ -326,51 +347,83 @@ export function App() {
               )}
             </article>
 
-            {/* Right Card: Target Date & Time Settings */}
-            <article className="glass-panel" style={{ padding: '20px' }}>
-              <h2 style={{ fontSize: '1rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
-                <Calendar style={{ color: '#818cf8', width: '18px', height: '18px' }} />
-                {t.dateSettingTitle}
-              </h2>
+            {/* Right Card: High-Visibility Target Date Picker & Presets (STEP 2) */}
+            <article className="glass-panel" style={{ padding: '20px', border: '1.5px solid rgba(99, 102, 241, 0.4)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                <h2 style={{ fontSize: '0.95rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', color: '#818cf8' }}>
+                  <Calendar style={{ width: '18px', height: '18px' }} />
+                  {t.dateSettingTitle}
+                </h2>
+                <span style={{ fontSize: '0.7rem', color: '#818cf8', background: 'rgba(99, 102, 241, 0.15)', padding: '2px 8px', borderRadius: '4px', fontWeight: 600 }}>
+                  {userTimeZone}
+                </span>
+              </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                
+                {/* Prominent Date Input with Glowing Clickable Border */}
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                    <label htmlFor="datetime-input" style={{ fontSize: '0.8rem', color: '#9ca3af', fontWeight: 500 }}>
-                      {t.dateLabel}
-                    </label>
-                    <span style={{ fontSize: '0.7rem', color: '#6366f1', background: 'rgba(99, 102, 241, 0.1)', padding: '2px 6px', borderRadius: '4px' }}>
-                      {userTimeZone}
-                    </span>
+                  <label htmlFor="datetime-input" style={{ fontSize: '0.8rem', color: '#d1d5db', fontWeight: 600, display: 'block', marginBottom: '6px' }}>
+                    {t.dateLabel}
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <input 
+                      id="datetime-input"
+                      type="datetime-local" 
+                      min={MIN_DATE_STR}
+                      max={MAX_DATE_STR}
+                      value={targetDateTimeStr}
+                      onChange={(e) => setTargetDateTimeStr(e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '12px 14px',
+                        background: 'rgba(99, 102, 241, 0.12)',
+                        border: '2px solid #6366f1',
+                        borderRadius: 'var(--radius-md)',
+                        color: '#ffffff',
+                        fontSize: '1.1rem',
+                        fontWeight: 700,
+                        fontFamily: 'inherit',
+                        outline: 'none',
+                        cursor: 'pointer',
+                        boxShadow: '0 0 12px rgba(99, 102, 241, 0.25)',
+                        transition: 'all 0.2s ease'
+                      }}
+                    />
                   </div>
-                  <input 
-                    id="datetime-input"
-                    type="datetime-local" 
-                    min={MIN_DATE_STR}
-                    max={MAX_DATE_STR}
-                    value={targetDateTimeStr}
-                    onChange={(e) => setTargetDateTimeStr(e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '10px 12px',
-                      background: 'rgba(15, 23, 42, 0.8)',
-                      border: '1px solid var(--border-color)',
-                      borderRadius: 'var(--radius-md)',
-                      color: '#fff',
-                      fontSize: '0.95rem',
-                      fontFamily: 'inherit',
-                      outline: 'none'
-                    }}
-                  />
                 </div>
 
-                {/* Compact seconds slider */}
+                {/* One-Click Quick Date Presets */}
+                <div>
+                  <span style={{ fontSize: '0.75rem', color: '#9ca3af', fontWeight: 600, display: 'block', marginBottom: '6px' }}>
+                    {t.quickPresetsLabel}
+                  </span>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                    <button onClick={() => applyPreset('now')} style={{ padding: '4px 10px', background: 'rgba(31, 41, 55, 0.8)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#f3f4f6', fontSize: '0.75rem', cursor: 'pointer', fontWeight: 600 }}>
+                      {t.presetNow}
+                    </button>
+                    <button onClick={() => applyPreset('yesterday')} style={{ padding: '4px 10px', background: 'rgba(31, 41, 55, 0.8)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#f3f4f6', fontSize: '0.75rem', cursor: 'pointer', fontWeight: 600 }}>
+                      {t.presetYesterday}
+                    </button>
+                    <button onClick={() => applyPreset('week')} style={{ padding: '4px 10px', background: 'rgba(31, 41, 55, 0.8)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#f3f4f6', fontSize: '0.75rem', cursor: 'pointer', fontWeight: 600 }}>
+                      {t.preset1WeekAgo}
+                    </button>
+                    <button onClick={() => applyPreset('month')} style={{ padding: '4px 10px', background: 'rgba(31, 41, 55, 0.8)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#f3f4f6', fontSize: '0.75rem', cursor: 'pointer', fontWeight: 600 }}>
+                      {t.preset1MonthAgo}
+                    </button>
+                    <button onClick={() => applyPreset('year')} style={{ padding: '4px 10px', background: 'rgba(31, 41, 55, 0.8)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#f3f4f6', fontSize: '0.75rem', cursor: 'pointer', fontWeight: 600 }}>
+                      {t.preset1YearAgo}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Compact Seconds Slider */}
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                    <label htmlFor="seconds-slider" style={{ fontSize: '0.8rem', color: '#9ca3af', fontWeight: 500 }}>
+                    <label htmlFor="seconds-slider" style={{ fontSize: '0.75rem', color: '#9ca3af', fontWeight: 500 }}>
                       {t.secondsLabel}
                     </label>
-                    <span style={{ fontSize: '0.8rem', color: '#6366f1', fontWeight: 700, fontFamily: 'monospace' }}>
+                    <span style={{ fontSize: '0.8rem', color: '#818cf8', fontWeight: 700, fontFamily: 'monospace' }}>
                       {String(selectedSecond).padStart(2, '0')} s
                     </span>
                   </div>
@@ -386,12 +439,12 @@ export function App() {
                   />
                 </div>
 
-                {/* Realtime Snapped Time Preview Badge */}
-                <div style={{ background: 'rgba(99, 102, 241, 0.1)', border: '1px solid rgba(99, 102, 241, 0.25)', borderRadius: 'var(--radius-md)', padding: '10px 14px' }}>
-                  <span style={{ fontSize: '0.7rem', color: '#818cf8', display: 'block', marginBottom: '2px', fontWeight: 600 }}>
+                {/* Realtime Final Applied Timestamp Preview */}
+                <div style={{ background: 'rgba(99, 102, 241, 0.12)', border: '1px solid rgba(99, 102, 241, 0.3)', borderRadius: 'var(--radius-md)', padding: '8px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '0.7rem', color: '#818cf8', fontWeight: 600 }}>
                     {t.previewTitle}
                   </span>
-                  <div style={{ fontSize: '0.95rem', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", color: '#f3f4f6' }}>
+                  <div style={{ fontSize: '0.9rem', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", color: '#f3f4f6' }}>
                     {finalSnappedDate.toLocaleDateString()} {finalSnappedDate.toLocaleTimeString()}
                   </div>
                 </div>
@@ -400,8 +453,12 @@ export function App() {
 
           </div>
 
-          {/* Mode Selector Segmented Tabs */}
+          {/* Mode Selector Segmented Tabs (STEP 3) */}
           <section className="glass-panel" style={{ padding: '16px 20px' }}>
+            <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#9ca3af', marginBottom: '12px', textAlign: 'center' }}>
+              {t.modeTitle}
+            </h2>
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
               <button
                 onClick={() => setTrackMode('A')}
@@ -456,7 +513,7 @@ export function App() {
                 className={trackMode === 'B' ? 'btn-pro' : 'btn-primary'}
                 onClick={handleExecute}
                 disabled={files.length === 0 || isProcessing}
-                style={{ width: '100%', maxWidth: '360px', fontSize: '0.95rem', padding: '12px 20px' }}
+                style={{ width: '100%', maxWidth: '380px', fontSize: '1rem', padding: '12px 20px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
                 aria-label={trackMode === 'A' ? t.actionButtonTrackA : t.actionButtonTrackB}
               >
                 {isProcessing ? (
@@ -494,7 +551,7 @@ export function App() {
         </div>
       </main>
 
-      {/* Sleek Footer */}
+      {/* Footer */}
       <footer role="contentinfo" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', padding: '20px', textAlign: 'center', color: '#6b7280', fontSize: '0.75rem' }}>
         <p>{t.footerRights}</p>
       </footer>
