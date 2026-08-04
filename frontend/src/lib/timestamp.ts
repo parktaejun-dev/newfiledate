@@ -48,6 +48,7 @@ export function formatForDateTimeInput(dt: Date): string {
 /**
  * Track A: Client-Side OS Timestamp Overwrite using JSZip.
  * 100% Privacy, processed in browser memory.
+ * Adjusts for macOS Archive Utility / Windows timezone extraction skew.
  */
 export async function processTrackALocal(
   files: File[],
@@ -57,6 +58,18 @@ export async function processTrackALocal(
   const zip = new JSZip();
   const clampedTarget = clampDate(snapToEvenSeconds(targetDate));
 
+  // Construct a Date object where UTC values match local time values.
+  // This ensures macOS Archive Utility and Windows Explorer extract files
+  // with the exact wall-clock date & time selected by the user.
+  const utcTargetDate = new Date(Date.UTC(
+    clampedTarget.getFullYear(),
+    clampedTarget.getMonth(),
+    clampedTarget.getDate(),
+    clampedTarget.getHours(),
+    clampedTarget.getMinutes(),
+    clampedTarget.getSeconds()
+  ));
+
   const total = files.length;
   for (let i = 0; i < total; i++) {
     const file = files[i];
@@ -64,7 +77,7 @@ export async function processTrackALocal(
     
     // Add file with target DOS date
     zip.file(file.name, arrayBuffer, {
-      date: clampedTarget,
+      date: utcTargetDate,
       binary: true
     });
 
