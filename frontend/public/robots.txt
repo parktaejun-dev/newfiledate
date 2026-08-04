@@ -1,0 +1,5 @@
+# TimeWeaver Search Engine Crawling Rules
+User-agent: *
+Allow: /
+
+Sitemap: https://timeweaver.app/sitemap.xml
