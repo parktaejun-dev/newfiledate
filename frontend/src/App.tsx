@@ -36,6 +36,8 @@ export interface FileItem {
   type: string;
 }
 
+const VERCEL_MAX_PAYLOAD_BYTES = 4.5 * 1024 * 1024; // 4.5 MB Vercel Serverless limit
+
 export function App() {
   const [lang, setLang] = useState<Language>(detectDefaultLanguage());
   const t = translations[lang];
@@ -55,6 +57,7 @@ export function App() {
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
   const totalSizeBytes = files.reduce((acc, f) => acc + f.size, 0);
   const isLargeSize = totalSizeBytes > 1024 * 1024 * 1024; // > 1GB
+  const hasExceededServerlessLimit = trackMode === 'B' && files.some(f => f.size > VERCEL_MAX_PAYLOAD_BYTES);
 
   const rawDate = new Date(targetDateTimeStr);
   const dateWithSecs = new Date(rawDate);
@@ -108,6 +111,15 @@ export function App() {
   const handleExecute = async () => {
     if (files.length === 0) return;
 
+    if (trackMode === 'B' && hasExceededServerlessLimit) {
+      const oversized = files.filter(f => f.size > VERCEL_MAX_PAYLOAD_BYTES);
+      const msg = lang === 'ko'
+        ? `[서버 업로드 용량 제한 경고]\n\nVercel 서버리스 호스팅 환경 제약으로 Track B(문서 내부 수정)는 파일당 최대 4.5MB까지만 지원됩니다.\n\n초과된 파일: ${oversized.map(f => `${f.name} (${(f.size/1024/1024).toFixed(1)}MB)`).join(', ')}\n\n100% 대용량 지원 및 브라우저 초고속 로컬 처리를 원하시면 'Track A (빠른 파일 날짜 변경)'를 선택해 주세요!`
+        : `[Serverless Payload Limit Warning]\n\nTrack B (Deep Metadata) supports max 4.5MB per file due to Vercel host limits.\n\nOversized files: ${oversized.map(f => `${f.name} (${(f.size/1024/1024).toFixed(1)}MB)`).join(', ')}\n\nPlease select 'Track A (Fast Local Change)' for unlimited local processing!`;
+      alert(msg);
+      return;
+    }
+
     setIsProcessing(true);
     setProgress(5);
 
@@ -151,6 +163,13 @@ export function App() {
         setProgress(80);
 
         if (!response.ok) {
+          if (response.status === 413) {
+            throw new Error(
+              lang === 'ko'
+                ? 'Vercel 서버리스 업로드 용량 제한 (4.5MB)을 초과했습니다 (413 Payload Too Large). 4.5MB 초과 대용량 파일은 100% 무제한 무료인 Track A (빠른 파일 날짜 변경)를 이용해 주세요!'
+                : 'File size exceeds Vercel Serverless limit (4.5MB max for Track B). Please use Track A (Fast Local Change) for files larger than 4.5MB!'
+            );
+          }
           const errJson = await response.json().catch(() => ({}));
           throw new Error(errJson.detail || `Server processing failed (${response.status})`);
         }
@@ -170,7 +189,7 @@ export function App() {
       }
     } catch (err: any) {
       console.error(err);
-      alert(`Processing Error: ${err.message || err}`);
+      alert(err.message || err);
     } finally {
       setTimeout(() => {
         setIsProcessing(false);
@@ -307,8 +326,18 @@ export function App() {
                 </p>
               </div>
 
+              {/* Oversized Serverless Warning Tooltip */}
+              {hasExceededServerlessLimit && (
+                <div style={{ marginTop: '12px', padding: '10px 14px', background: 'rgba(239, 68, 68, 0.12)', border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <AlertTriangle style={{ color: '#ef4444', width: '18px', height: '18px', flexShrink: 0 }} />
+                  <p style={{ fontSize: '0.8rem', color: '#fca5a5', margin: 0 }}>
+                    <strong>{lang === 'ko' ? '용량 제한 안내:' : 'Payload Limit:'}</strong> {lang === 'ko' ? 'Track B(문서 내부 수정)는 Vercel 호스팅 제한으로 파일당 4.5MB까지만 업로드 가능합니다. 대용량 파일은 Track A를 선택해 주세요!' : 'Track B supports max 4.5MB per file on Vercel host. Please use Track A for larger files!'}
+                  </p>
+                </div>
+              )}
+
               {/* Large File Size Warning Tooltip */}
-              {isLargeSize && (
+              {isLargeSize && !hasExceededServerlessLimit && (
                 <div style={{ marginTop: '12px', padding: '10px 14px', background: 'rgba(245, 158, 11, 0.12)', border: '1px solid rgba(245, 158, 11, 0.3)', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <AlertTriangle style={{ color: '#f59e0b', width: '18px', height: '18px', flexShrink: 0 }} />
                   <p style={{ fontSize: '0.8rem', color: '#fbbf24', margin: 0 }}>
@@ -329,7 +358,7 @@ export function App() {
                         </span>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+                        <span style={{ fontSize: '0.75rem', color: item.size > VERCEL_MAX_PAYLOAD_BYTES && trackMode === 'B' ? '#ef4444' : '#6b7280', fontWeight: item.size > VERCEL_MAX_PAYLOAD_BYTES && trackMode === 'B' ? 700 : 400 }}>
                           {(item.size / 1024 / 1024).toFixed(2)} MB
                         </span>
                         <button 
