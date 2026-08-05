@@ -23,6 +23,7 @@ import {
   translations, 
   detectDefaultLanguage 
 } from './lib/i18n';
+import { trackGAEvent } from './lib/ga';
 
 export interface FileItem {
   id: string;
@@ -57,8 +58,16 @@ export function App() {
   dateWithSecs.setSeconds(selectedSecond);
   const finalSnappedDate = clampDate(snapToEvenSeconds(dateWithSecs));
 
-  // Quick Preset Helper Functions
+  // Language Switch Handler with GA4 Event
+  const toggleLanguage = () => {
+    const nextLang = lang === 'en' ? 'ko' : 'en';
+    setLang(nextLang);
+    trackGAEvent('language_switch', { lang: nextLang });
+  };
+
+  // Quick Preset Helper Functions with GA4 Event
   const applyPreset = (presetType: 'now' | 'yesterday' | 'week' | 'month' | 'year') => {
+    trackGAEvent('preset_click', { preset: presetType });
     const now = new Date();
     if (presetType === 'now') {
       setTargetDateTimeStr(formatForDateTimeInput(now));
@@ -76,6 +85,12 @@ export function App() {
       now.setFullYear(now.getFullYear() - 1);
       setTargetDateTimeStr(formatForDateTimeInput(now));
     }
+  };
+
+  // Mode Toggle Handler with GA4 Event
+  const selectMode = (mode: 'A' | 'B') => {
+    setTrackMode(mode);
+    trackGAEvent('mode_select', { mode });
   };
 
   const handleDrag = (e: React.DragEvent) => {
@@ -104,6 +119,7 @@ export function App() {
   };
 
   const addFiles = (newFiles: File[]) => {
+    trackGAEvent('file_upload', { count: newFiles.length });
     const items: FileItem[] = newFiles.map((file) => ({
       id: Math.random().toString(36).substring(2, 9),
       file,
@@ -124,6 +140,12 @@ export function App() {
 
   const handleExecute = async () => {
     if (files.length === 0) return;
+
+    trackGAEvent('date_change_execute', {
+      mode: trackMode,
+      file_count: files.length,
+      target_date: finalSnappedDate.toISOString()
+    });
 
     if (trackMode === 'B' && hasExceededServerlessLimit) {
       const oversized = files.filter(f => f.size > VERCEL_MAX_PAYLOAD_BYTES);
@@ -229,7 +251,7 @@ export function App() {
           </div>
 
           <button 
-            onClick={() => setLang(lang === 'en' ? 'ko' : 'en')}
+            onClick={toggleLanguage}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -418,7 +440,7 @@ export function App() {
           <section className="glass-panel" style={{ padding: '12px 14px' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '10px' }}>
               <button
-                onClick={() => setTrackMode('A')}
+                onClick={() => selectMode('A')}
                 style={{
                   padding: '8px 10px',
                   borderRadius: 'var(--radius-md)',
@@ -435,7 +457,7 @@ export function App() {
               </button>
 
               <button
-                onClick={() => setTrackMode('B')}
+                onClick={() => selectMode('B')}
                 style={{
                   padding: '8px 10px',
                   borderRadius: 'var(--radius-md)',
