@@ -1,5 +1,6 @@
-# TimeWeaver Search Engine Crawling Rules
+# NewFileDate Search Engine Crawling Rules
 User-agent: *
 Allow: /
 
-Sitemap: https://timeweaver.app/sitemap.xml
+Sitemap: https://newfiledate.vercel.app/sitemap.xml
+Sitemap: https://newfiledate.com/sitemap.xml
