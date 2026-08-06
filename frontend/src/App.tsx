@@ -7,7 +7,8 @@ import {
   X, 
   Calendar,
   HardDrive,
-  Globe
+  Globe,
+  CheckCircle2
 } from 'lucide-react';
 import { 
   formatForDateTimeInput, 
@@ -45,6 +46,7 @@ export function App() {
   const [selectedSecond, setSelectedSecond] = useState<number>(0);
   const [trackMode, setTrackMode] = useState<'A' | 'B'>('A');
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [isCompleted, setIsCompleted] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [statusMessage, setStatusMessage] = useState<string>('');
   const [dragActive, setDragActive] = useState<boolean>(false);
@@ -156,6 +158,7 @@ export function App() {
     }
 
     setIsProcessing(true);
+    setIsCompleted(false);
     setProgress(5);
 
     try {
@@ -170,7 +173,8 @@ export function App() {
         });
 
         setProgress(100);
-        setStatusMessage('Complete!');
+        setIsCompleted(true);
+        setStatusMessage(t.completeMsg);
         
         const url = URL.createObjectURL(zipBlob);
         const a = document.createElement('a');
@@ -211,7 +215,8 @@ export function App() {
 
         const blob = await response.blob();
         setProgress(100);
-        setStatusMessage('Complete!');
+        setIsCompleted(true);
+        setStatusMessage(t.completeMsg);
 
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -228,14 +233,17 @@ export function App() {
     } finally {
       setTimeout(() => {
         setIsProcessing(false);
+        setIsCompleted(false);
         setProgress(0);
         setStatusMessage('');
-      }, 1500);
+      }, 2500);
     }
   };
 
+  const isFormDimmed = files.length === 0;
+
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--bg-main)' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', background: 'var(--bg-main)' }}>
       
       {/* 1. Header */}
       <header role="banner" style={{ height: '48px', borderBottom: '2px solid #09090b', background: '#ffffff', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
@@ -275,8 +283,8 @@ export function App() {
         </div>
       </header>
 
-      {/* 2. Main Centered 1-Column Area with Side Ad Margins (No Scroll) */}
-      <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '12px', overflow: 'hidden' }}>
+      {/* 2. Main Centered 1-Column Area with Side Ad Margins */}
+      <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px 12px', overflowY: 'auto' }}>
         
         {/* Left Side Ad Space Placeholder */}
         <aside style={{ flex: 1, maxWidth: '240px', height: '100%', display: 'none' }} className="ad-container-left" />
@@ -367,129 +375,138 @@ export function App() {
             )}
           </article>
 
-          {/* SECTION 2: Target Date Picker & Presets */}
+          {/* SECTION 2: Target Date Picker & Presets (Dimmed when no files) */}
           <article className="glass-panel" style={{ padding: '12px 14px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-              <h2 style={{ fontSize: '0.85rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px', color: '#09090b', margin: 0 }}>
-                <Calendar style={{ width: '15px', height: '15px', color: '#2563eb' }} />
-                {t.dateSettingTitle}
-              </h2>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {/* Glowing Clickable Date Picker Input */}
-              <input 
-                id="datetime-input"
-                type="datetime-local" 
-                min={MIN_DATE_STR}
-                max={MAX_DATE_STR}
-                value={targetDateTimeStr}
-                onChange={(e) => setTargetDateTimeStr(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '8px 10px',
-                  background: '#ffffff',
-                  border: '2px solid #09090b',
-                  borderRadius: 'var(--radius-md)',
-                  color: '#09090b',
-                  fontSize: '0.95rem',
-                  fontWeight: 800,
-                  fontFamily: 'inherit',
-                  outline: 'none',
-                  cursor: 'pointer',
-                  boxShadow: '3px 3px 0px #09090b'
-                }}
-              />
-
-              {/* Compact One-Click Presets */}
-              <div style={{ display: 'flex', gap: '4px' }}>
-                <button onClick={() => applyPreset('now')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #09090b', borderRadius: '6px', color: '#09090b', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 800, boxShadow: '2px 2px 0px #09090b' }}>
-                  {t.presetNow}
-                </button>
-                <button onClick={() => applyPreset('yesterday')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #09090b', borderRadius: '6px', color: '#09090b', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 800, boxShadow: '2px 2px 0px #09090b' }}>
-                  {t.presetYesterday}
-                </button>
-                <button onClick={() => applyPreset('week')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #09090b', borderRadius: '6px', color: '#09090b', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 800, boxShadow: '2px 2px 0px #09090b' }}>
-                  {t.preset1WeekAgo}
-                </button>
-                <button onClick={() => applyPreset('month')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #09090b', borderRadius: '6px', color: '#09090b', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 800, boxShadow: '2px 2px 0px #09090b' }}>
-                  {t.preset1MonthAgo}
-                </button>
-                <button onClick={() => applyPreset('year')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #09090b', borderRadius: '6px', color: '#09090b', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 800, boxShadow: '2px 2px 0px #09090b' }}>
-                  {t.preset1YearAgo}
-                </button>
+            <div style={{ opacity: isFormDimmed ? 0.45 : 1, pointerEvents: isFormDimmed ? 'none' : 'auto', transition: 'opacity 0.2s ease' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <h2 style={{ fontSize: '0.85rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px', color: '#09090b', margin: 0 }}>
+                  <Calendar style={{ width: '15px', height: '15px', color: '#2563eb' }} />
+                  {t.dateSettingTitle}
+                </h2>
               </div>
 
-              {/* Compact Seconds Slider & Preview Badge */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#f8fafc', border: '1.5px solid #09090b', borderRadius: '6px', boxShadow: '2px 2px 0px #09090b', padding: '6px 8px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {/* Clickable Date Picker Input */}
                 <input 
-                  id="seconds-slider"
-                  type="range" 
-                  min={0}
-                  max={58}
-                  step={2}
-                  value={selectedSecond}
-                  onChange={(e) => setSelectedSecond(parseInt(e.target.value))}
-                  style={{ flex: 1, accentColor: '#2563eb', cursor: 'pointer' }}
+                  id="datetime-input"
+                  type="datetime-local" 
+                  min={MIN_DATE_STR}
+                  max={MAX_DATE_STR}
+                  value={targetDateTimeStr}
+                  onChange={(e) => setTargetDateTimeStr(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '8px 10px',
+                    background: '#ffffff',
+                    border: '2px solid #09090b',
+                    borderRadius: 'var(--radius-md)',
+                    color: '#09090b',
+                    fontSize: '0.95rem',
+                    fontWeight: 800,
+                    fontFamily: 'inherit',
+                    outline: 'none',
+                    cursor: 'pointer',
+                    boxShadow: '3px 3px 0px #09090b'
+                  }}
                 />
-                <div style={{ fontSize: '0.78rem', fontWeight: 800, fontFamily: "'JetBrains Mono', monospace", color: '#09090b', whiteSpace: 'nowrap' }}>
-                  {finalSnappedDate.toLocaleDateString()} {finalSnappedDate.toLocaleTimeString()}
+
+                {/* Compact One-Click Presets */}
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  <button onClick={() => applyPreset('now')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #09090b', borderRadius: '6px', color: '#09090b', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 800, boxShadow: '2px 2px 0px #09090b' }}>
+                    {t.presetNow}
+                  </button>
+                  <button onClick={() => applyPreset('yesterday')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #09090b', borderRadius: '6px', color: '#09090b', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 800, boxShadow: '2px 2px 0px #09090b' }}>
+                    {t.presetYesterday}
+                  </button>
+                  <button onClick={() => applyPreset('week')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #09090b', borderRadius: '6px', color: '#09090b', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 800, boxShadow: '2px 2px 0px #09090b' }}>
+                    {t.preset1WeekAgo}
+                  </button>
+                  <button onClick={() => applyPreset('month')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #09090b', borderRadius: '6px', color: '#09090b', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 800, boxShadow: '2px 2px 0px #09090b' }}>
+                    {t.preset1MonthAgo}
+                  </button>
+                  <button onClick={() => applyPreset('year')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #09090b', borderRadius: '6px', color: '#09090b', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 800, boxShadow: '2px 2px 0px #09090b' }}>
+                    {t.preset1YearAgo}
+                  </button>
+                </div>
+
+                {/* Seconds Slider & Timestamp Preview */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#f8fafc', border: '1.5px solid #09090b', borderRadius: '6px', boxShadow: '2px 2px 0px #09090b', padding: '6px 8px' }}>
+                  <input 
+                    id="seconds-slider"
+                    type="range" 
+                    min={0}
+                    max={58}
+                    step={2}
+                    value={selectedSecond}
+                    onChange={(e) => setSelectedSecond(parseInt(e.target.value))}
+                    style={{ flex: 1, accentColor: '#2563eb', cursor: 'pointer' }}
+                  />
+                  <div style={{ fontSize: '0.78rem', fontWeight: 800, fontFamily: "'JetBrains Mono', monospace", color: '#09090b', whiteSpace: 'nowrap' }}>
+                    {finalSnappedDate.toLocaleDateString()} {finalSnappedDate.toLocaleTimeString()}
+                  </div>
                 </div>
               </div>
             </div>
           </article>
 
-          {/* SECTION 3: Mode Selector & Execute Button */}
+          {/* SECTION 3: Mode Selector & Execute Button (Dimmed when no files) */}
           <section className="glass-panel" style={{ padding: '12px 14px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '10px' }}>
-              <button
-                onClick={() => selectMode('A')}
-                style={{
-                  padding: '8px 10px',
-                  borderRadius: 'var(--radius-md)',
-                  border: '2px solid #09090b',
-                  background: trackMode === 'A' ? '#2563eb' : '#ffffff',
-                  color: trackMode === 'A' ? '#ffffff' : '#09090b',
-                  fontWeight: 800,
-                  fontSize: '0.75rem',
-                  cursor: 'pointer',
-                  textAlign: 'center',
-                  boxShadow: trackMode === 'A' ? '3px 3px 0px #09090b' : '2px 2px 0px #09090b',
-                  transition: 'all 0.1s ease'
-                }}
-              >
-                {t.trackATitle}
-              </button>
+            <div style={{ opacity: isFormDimmed ? 0.45 : 1, pointerEvents: isFormDimmed ? 'none' : 'auto', transition: 'opacity 0.2s ease' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '6px' }}>
+                <button
+                  onClick={() => selectMode('A')}
+                  style={{
+                    padding: '8px 6px',
+                    borderRadius: 'var(--radius-md)',
+                    border: '2px solid #09090b',
+                    background: trackMode === 'A' ? '#2563eb' : '#ffffff',
+                    color: trackMode === 'A' ? '#ffffff' : '#09090b',
+                    fontWeight: 800,
+                    fontSize: '0.75rem',
+                    cursor: 'pointer',
+                    textAlign: 'center',
+                    boxShadow: trackMode === 'A' ? '3px 3px 0px #09090b' : '2px 2px 0px #09090b',
+                    transition: 'all 0.1s ease'
+                  }}
+                >
+                  {t.trackATitle}
+                </button>
 
-              <button
-                onClick={() => selectMode('B')}
-                style={{
-                  padding: '8px 10px',
-                  borderRadius: 'var(--radius-md)',
-                  border: '2px solid #09090b',
-                  background: trackMode === 'B' ? '#ea580c' : '#ffffff',
-                  color: trackMode === 'B' ? '#ffffff' : '#09090b',
-                  fontWeight: 800,
-                  fontSize: '0.75rem',
-                  cursor: 'pointer',
-                  textAlign: 'center',
-                  boxShadow: trackMode === 'B' ? '3px 3px 0px #09090b' : '2px 2px 0px #09090b',
-                  transition: 'all 0.1s ease'
-                }}
-              >
-                {t.trackBTitle}
-              </button>
-            </div>
-
-            {/* Oversized Serverless Warning Tooltip */}
-            {hasExceededServerlessLimit && (
-              <div style={{ marginBottom: '10px', padding: '6px 8px', background: '#fee2e2', border: '1.5px solid #09090b', borderRadius: '6px', boxShadow: '2px 2px 0px #09090b', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <AlertTriangle style={{ color: '#dc2626', width: '14px', height: '14px', flexShrink: 0 }} />
-                <p style={{ fontSize: '0.68rem', color: '#991b1b', margin: 0, fontWeight: 700 }}>
-                  Track B는 4.5MB 이하만 가능합니다. 대용량은 OS 날짜 변경을 선택해 주세요!
-                </p>
+                <button
+                  onClick={() => selectMode('B')}
+                  style={{
+                    padding: '8px 6px',
+                    borderRadius: 'var(--radius-md)',
+                    border: '2px solid #09090b',
+                    background: trackMode === 'B' ? '#ea580c' : '#ffffff',
+                    color: trackMode === 'B' ? '#ffffff' : '#09090b',
+                    fontWeight: 800,
+                    fontSize: '0.75rem',
+                    cursor: 'pointer',
+                    textAlign: 'center',
+                    boxShadow: trackMode === 'B' ? '3px 3px 0px #09090b' : '2px 2px 0px #09090b',
+                    transition: 'all 0.1s ease'
+                  }}
+                >
+                  {t.trackBTitle}
+                </button>
               </div>
-            )}
+
+              {/* Sub-description for selected track */}
+              <p style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 600, textAlign: 'center', marginBottom: '10px' }}>
+                {trackMode === 'A' ? t.trackADesc : t.trackBDesc}
+              </p>
+
+              {/* Oversized Serverless Warning Tooltip */}
+              {hasExceededServerlessLimit && (
+                <div style={{ marginBottom: '10px', padding: '6px 8px', background: '#fee2e2', border: '1.5px solid #09090b', borderRadius: '6px', boxShadow: '2px 2px 0px #09090b', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <AlertTriangle style={{ color: '#dc2626', width: '14px', height: '14px', flexShrink: 0 }} />
+                  <p style={{ fontSize: '0.68rem', color: '#991b1b', margin: 0, fontWeight: 700 }}>
+                    Track B는 4.5MB 이하만 가능합니다. 대용량은 OS 날짜 변경을 선택해 주세요!
+                  </p>
+                </div>
+              )}
+            </div>
 
             {/* Action Button */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}>
@@ -500,7 +517,12 @@ export function App() {
                 style={{ width: '100%', fontSize: '0.9rem', padding: '10px 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                 aria-label={t.actionButton}
               >
-                {isProcessing ? (
+                {isCompleted ? (
+                  <>
+                    <CheckCircle2 style={{ width: '16px', height: '16px', color: '#ffffff' }} />
+                    {t.completeMsg}
+                  </>
+                ) : isProcessing ? (
                   <>{statusMessage || t.processingMsg} ({progress}%)...</>
                 ) : (
                   <>
