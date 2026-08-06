@@ -1,70 +1,124 @@
 # NewFileDate (Online File Date & Timestamp Editor)
 
-> **Online File Date & Timestamp Editor with HWP / PPTX / DOCX Deep Metadata Standardization**
+> Change OS file dates, photo EXIF capture dates, and the creation dates stored inside HWP / PPTX / DOCX documents.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF.svg)](https://vite.dev)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688.svg)](https://fastapi.tiangolo.com)
-[![React](https://img.shields.io/badge/React-18+-61DAFB.svg)](https://reactjs.org)
-[![Vite](https://img.shields.io/badge/Vite-5+-646CFF.svg)](https://vitejs.dev)
-
-**NewFileDate** is a web-based utility designed to solve lost file modified timestamps during cloud sync/transfers and standardize internal document metadata (creation dates, modified dates) inside HWP (OLE), PPTX, and DOCX files.
 
 ---
 
-## ✨ Features
+## Two processing modes
 
-- **Track A (100% Free & Local Privacy)**:
-  - Overwrites OS file modified timestamps directly in browser memory using **JSZip**.
-  - **Zero Server Uploads**: Complete privacy for sensitive personal or corporate files.
-  - **DOS Timestamp Snapping**: Snaps seconds to 2-second even intervals (`00`, `02`, `04` ... `58`) per ZIP specification.
-  - **Date Clamping**: Restricts dates within `1980-01-01` to `2107-12-31`.
+| | File Date (OS) | HWP / PPT (Pro) |
+|---|---|---|
+| Where it runs | Your browser | Server |
+| File leaves the device | **No** | **Yes** |
+| Size limit | None | 4.5 MB per file (host payload cap) |
+| Formats | Any | HWP, PPTX, DOCX, JPEG |
 
-- **Track B (Pro Deep Document Metadata Standardizer)**:
-  - **HWP (OLE Compound Storage)**: Parses and in-place overwrites `\x05HwpSummaryInformation` stream Property IDs 11 (Last Printed), 12 (Created Date), and 13 (Last Saved Date) 64-bit Windows FILETIME values.
-  - **OOXML (DOCX / PPTX)**: Updates Dublin Core metadata (`dcterms:created`, `dcterms:modified`) inside `docProps/core.xml`.
-  - **ZIP Packaging**: Retains modified OS timestamps on extraction.
-
-- **Internationalization (i18n)**:
-  - Automatic browser language detection (`en` English default, `ko` Korean support).
-  - Instant header language switcher toggle (`EN | KO`).
-
-- **Deployable Anywhere**:
-  - One-click deployment on **Vercel** via Static Host + Python Serverless Function (`api/index.py`).
+**File Date (OS)** builds the ZIP in browser memory with JSZip; nothing is transmitted.
+**Pro** must upload the document because the target timestamps live inside the container.
+Uploaded files exist only in memory for the duration of the request and are discarded once
+the response is written — they are never persisted. The UI states which of the two applies
+to the selected mode; see [privacy.html](frontend/public/privacy.html).
 
 ---
 
-## 🛠️ Architecture & Tech Stack
+## Timestamp model
 
-- **Frontend**: React, TypeScript, Vite, Tailwind CSS, JSZip, Lucide Icons
-- **Backend**: FastAPI, `olefile>=0.47`, `python-docx`, `python-pptx`, Uvicorn, Pytest
-- **Deployment**: Vercel (`vercel.json`)
+Two different kinds of timestamp are involved, and conflating them shifts every result:
+
+- **Wall clock, no timezone** — ZIP/DOS entry dates and EXIF `DateTimeOriginal`.
+  Written exactly as the user picked them.
+- **UTC instant** — Windows FILETIME in the HWP summary stream and `dcterms:created`
+  / `dcterms:modified` in OOXML.
+
+The client sends the wall clock it displayed plus `tz_offset_minutes`
+(the `Date.getTimezoneOffset()` convention), so the server derives both without
+assuming any particular timezone.
+
+Other format constraints:
+
+- **DOS second snapping** — ZIP timestamps have two-second resolution, so seconds
+  floor to an even value (`00`, `02`, ... `58`).
+- **Range clamping** — `1980-01-01` to `2107-12-31`, the representable DOS range.
+- **EXIF edits are confined to the APP1 segment**, never applied across the whole
+  file, so entropy-coded image data cannot be corrupted.
+- A photo carrying no EXIF timestamp is reported as skipped rather than silently
+  counted as changed.
 
 ---
 
-## 🚀 Quick Start (Local Development)
+## Security posture
 
-### 1. Clone & Install Frontend
+Track B accepts untrusted files from the public internet. The following are enforced
+in `backend/`:
+
+| Control | Where |
+|---|---|
+| Upload filenames stripped to a safe basename (no traversal) | `metadata_editor.sanitize_filename` |
+| Duplicate names suffixed instead of overwritten | `metadata_editor.deduplicate_filename` |
+| Decompression-bomb limits (entry count, entry size, total size, ratio) | `metadata_editor._assert_archive_safe` |
+| Reads capped independently of self-reported ZIP sizes | `metadata_editor._read_entry_bounded` |
+| Per-file / total / count upload limits | `main.py` |
+| Extension allowlist | `main.py` |
+| CORS restricted to known origins (`ALLOWED_ORIGINS` env var) | `main.py` |
+| Generic error bodies; details only to logs | `main.py` |
+| CSP and related response headers | `vercel.json` |
+
+**Not solved in code:** per-IP rate limiting. A stateless serverless function cannot
+enforce it reliably across instances — configure Vercel WAF rate limiting, or an
+external store, at the edge.
+
+---
+
+## Quick start
+
+### Frontend
 ```bash
 cd frontend
-npm install
-npm run dev
+npm ci
+npm run dev        # http://localhost:3000
 ```
 
-### 2. Setup Backend Virtual Environment
+### Backend
 ```bash
 python3 -m venv backend/venv
 source backend/venv/bin/activate
 pip install -r backend/requirements.txt
-python backend/main.py
+python backend/main.py    # http://127.0.0.1:8000
 ```
 
-### 3. Run Tests
+### Tests
 ```bash
-./backend/venv/bin/pytest backend/test_backend.py -v
+cd frontend && npm test          # vitest, jsdom
+cd backend  && pytest -q         # pytest
+```
+
+### Regenerating the Open Graph image
+```bash
+pip install -r tools/requirements.txt
+python3 tools/make_og_image.py
 ```
 
 ---
 
-## 📄 License
+## Layout
 
-This project is open-source and available under the [MIT License](LICENSE).
+```
+api/index.py             Vercel entrypoint -> backend/main.py
+api/requirements.txt     Serverless runtime deps (minimal)
+backend/main.py          FastAPI routes, request limits, CORS
+backend/metadata_editor.py  Format parsers and safety limits
+backend/requirements.txt Dev + test deps
+frontend/src/lib/timestamp.ts  Track A archive build, EXIF rewriting
+tools/make_og_image.py   Regenerates frontend/public/og-image.png
+```
+
+---
+
+## License
+
+[MIT](LICENSE)

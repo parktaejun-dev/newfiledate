@@ -1,7 +1,8 @@
+# Serverless runtime dependencies only.
+# python-pptx / python-docx / pytest are test fixtures and are intentionally not
+# installed here: they are not imported at runtime and only enlarge the bundle.
+# uvicorn is not needed either -- Vercel serves the ASGI app directly.
 fastapi>=0.110.0
-uvicorn[standard]>=0.28.0
 olefile>=0.47
-python-pptx>=0.6.21
-python-docx>=1.1.0
 python-multipart>=0.0.9
 pydantic>=2.0.0

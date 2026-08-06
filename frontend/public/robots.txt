@@ -1,6 +1,6 @@
 # NewFileDate Search Engine Crawling Rules
 User-agent: *
 Allow: /
+Disallow: /api/
 
-Sitemap: https://newfiledate.vercel.app/sitemap.xml
-Sitemap: https://newfiledate.com/sitemap.xml
+Sitemap: https://www.newfiledate.com/sitemap.xml
