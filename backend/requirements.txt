@@ -1,6 +1,6 @@
 # Local development and test dependencies.
 # The serverless runtime installs the smaller set in api/requirements.txt.
-fastapi>=0.110.0
+fastapi>=0.141.1
 olefile>=0.47
 python-multipart>=0.0.9
 pydantic>=2.0.0
