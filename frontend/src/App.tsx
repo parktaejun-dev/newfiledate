@@ -8,7 +8,8 @@ import {
   Calendar,
   HardDrive,
   Globe,
-  CheckCircle2
+  CheckCircle2,
+  Clock
 } from 'lucide-react';
 import { 
   formatForDateTimeInput, 
@@ -246,14 +247,12 @@ export function App() {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', background: 'var(--bg-main)' }}>
       
       {/* 1. Header */}
-      <header role="banner" style={{ height: '48px', borderBottom: '2px solid #09090b', background: '#ffffff', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
-        <div style={{ maxWidth: '1100px', width: '100%', margin: '0 auto', padding: '0 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <header role="banner" style={{ height: '44px', borderBottom: '2px solid #09090b', background: '#ffffff', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+        <div style={{ maxWidth: '1100px', width: '100%', margin: '0 auto', padding: '0 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <img 
-              src="/logo.png" 
-              alt="NewFileDate Logo" 
-              style={{ width: '22px', height: '22px', objectFit: 'contain' }} 
-            />
+            <div style={{ background: '#09090b', padding: '4px', borderRadius: '5px', display: 'flex' }}>
+              <Clock style={{ width: '14px', height: '14px', color: '#ffffff' }} />
+            </div>
             <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#09090b', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.03em' }}>
               NewFileDate
             </span>
@@ -284,17 +283,16 @@ export function App() {
       </header>
 
       {/* 2. Main Centered 1-Column Area with Side Ad Margins */}
-      <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px 12px', overflowY: 'auto' }}>
+      <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '6px 12px 12px', overflowY: 'auto' }}>
         
         {/* Left Side Ad Space Placeholder */}
         <aside style={{ flex: 1, maxWidth: '240px', height: '100%', display: 'none' }} className="ad-container-left" />
 
         {/* Single Center 1-Column App Container (Max-Width 460px) */}
-        <main id="main-content" role="main" style={{ width: '100%', maxWidth: '460px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <main id="main-content" role="main" style={{ width: '100%', maxWidth: '460px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
           
-          {/* Compact Main Title with Inline Icon */}
-          <h1 id="hero-heading" style={{ fontSize: '1.35rem', fontWeight: 800, letterSpacing: '-0.03em', textAlign: 'center', color: '#09090b', margin: 0, fontFamily: "'Space Grotesk', sans-serif", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-            <img src="/logo.png" alt="Logo" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
+          {/* Main Title - Tight, No Logo, Zero Waste Whitespace */}
+          <h1 id="hero-heading" style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.03em', textAlign: 'center', color: '#09090b', margin: '2px 0', fontFamily: "'Space Grotesk', sans-serif" }}>
             {t.heroTitle}
           </h1>
 
