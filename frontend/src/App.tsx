@@ -9,7 +9,8 @@ import {
   HardDrive,
   Globe,
   CheckCircle2,
-  Clock
+  Clock,
+  ShieldCheck
 } from 'lucide-react';
 import { 
   formatForDateTimeInput, 
@@ -292,9 +293,17 @@ export function App() {
         <main id="main-content" role="main" style={{ width: '100%', maxWidth: '460px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
           
           {/* Main Title - Tight, No Logo, Zero Waste Whitespace */}
-          <h1 id="hero-heading" style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.03em', textAlign: 'center', color: '#09090b', margin: '2px 0', fontFamily: "'Space Grotesk', sans-serif" }}>
+          <h1 id="hero-heading" style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.03em', textAlign: 'center', color: '#09090b', margin: '2px 0 0', fontFamily: "'Space Grotesk', sans-serif" }}>
             {t.heroTitle}
           </h1>
+
+          {/* Privacy Security Highlight Badge */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: '#ecfdf5', border: '1.5px solid #09090b', borderRadius: '6px', padding: '4px 10px', boxShadow: '2px 2px 0px #09090b', margin: '2px 0 4px' }}>
+            <ShieldCheck style={{ width: '15px', height: '15px', color: '#059669', flexShrink: 0 }} />
+            <span style={{ fontSize: '0.70rem', fontWeight: 800, color: '#065f46', letterSpacing: '-0.01em' }}>
+              {t.privacyGuarantee}
+            </span>
+          </div>
 
           {/* SECTION 1: File Upload Box */}
           <article className="glass-panel" style={{ padding: '12px 14px' }}>

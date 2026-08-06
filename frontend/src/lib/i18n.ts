@@ -3,6 +3,7 @@ export type Language = 'en' | 'ko';
 export interface TranslationDictionary {
   brandSubtitle: string;
   heroTitle: string;
+  privacyGuarantee: string;
   uploadTitle: string;
   clearAll: string;
   dragDropText: string;
@@ -27,6 +28,7 @@ export const translations: Record<Language, TranslationDictionary> = {
   en: {
     brandSubtitle: "Date Fix",
     heroTitle: "File Date Fixer",
+    privacyGuarantee: "🔒 100% Secure & Private: Zero Server Uploads · Local Browser Only",
     uploadTitle: "1. Select Files",
     clearAll: "Clear",
     dragDropText: "Drop files here or click to upload",
@@ -44,11 +46,12 @@ export const translations: Record<Language, TranslationDictionary> = {
     actionButton: "Apply Date & Download ZIP",
     completeMsg: "Completed!",
     processingMsg: "Processing...",
-    footerRights: "© 2026 NewFileDate."
+    footerRights: "© 2026 NewFileDate. 100% Local Browser Processing & Zero Server Storage."
   },
   ko: {
     brandSubtitle: "날짜 수정 툴",
     heroTitle: "파일 날짜 변경",
+    privacyGuarantee: "🔒 100% 보안: 서버 업로드 및 저장 NO · 브라우저 로컬에서 안전 처리",
     uploadTitle: "1. 파일 선택",
     clearAll: "비우기",
     dragDropText: "파일 드래그 또는 클릭하여 선택",
@@ -66,7 +69,7 @@ export const translations: Record<Language, TranslationDictionary> = {
     actionButton: "날짜 변경 및 다운로드",
     completeMsg: "완료 되었습니다!",
     processingMsg: "처리 중...",
-    footerRights: "© 2026 NewFileDate."
+    footerRights: "© 2026 NewFileDate. 100% 로컬 메모리 처리로 서버에 데이터가 저장되지 않습니다."
   }
 };
 
