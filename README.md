@@ -66,11 +66,37 @@ in `backend/`:
 | Extension allowlist | `main.py` |
 | CORS restricted to known origins (`ALLOWED_ORIGINS` env var) | `main.py` |
 | Generic error bodies; details only to logs | `main.py` |
-| CSP and related response headers | `vercel.json` |
+| Best-effort per-instance rate limit, checked before any file is read | `main.py` |
+| CSP (no `script-src 'unsafe-inline'`) and related headers | `vercel.json` |
 
-**Not solved in code:** per-IP rate limiting. A stateless serverless function cannot
-enforce it reliably across instances — configure Vercel WAF rate limiting, or an
-external store, at the edge.
+### Rate limiting
+
+`main.py` enforces 20 requests / 60s per client IP, rejected before any upload is
+read. **This is per-instance.** A serverless platform runs many instances
+concurrently, so a distributed flood still gets roughly `instances × limit`. It
+reduces the cost of a sustained single-source flood; it is not a complete control.
+
+For a real limit, add an edge rule — Vercel dashboard → project → **Firewall** →
+*Custom Rules*: match `Path` starts with `/api/`, action **Rate Limit**, e.g. 30
+requests per 60s keyed by IP. Edge rules run before the function is invoked, so
+blocked requests cost nothing.
+
+### Content Security Policy
+
+`script-src` does **not** include `'unsafe-inline'`. The GA bootstrap lives in
+`frontend/public/ga-init.js`, and the one remaining inline block (JSON-LD) is
+allowlisted by sha256 hash in `vercel.json`.
+
+Editing that JSON-LD changes its hash and the browser will silently block it, so
+the hash is verified in CI:
+
+```bash
+cd frontend && npm run build && npm run csp:check   # verify
+cd frontend && npm run csp:update                   # rewrite vercel.json
+```
+
+`style-src` still allows `'unsafe-inline'`: the UI uses React inline `style`
+props, which are governed by that directive.
 
 ---
 

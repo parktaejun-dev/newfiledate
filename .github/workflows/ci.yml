@@ -32,6 +32,9 @@ jobs:
         run: npm test
       - name: Build
         run: npm run build
+      - name: CSP inline-script hashes match the build
+        working-directory: .
+        run: node tools/check-csp-hashes.mjs
 
   backend:
     runs-on: ubuntu-latest

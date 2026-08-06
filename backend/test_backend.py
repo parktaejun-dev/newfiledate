@@ -2,6 +2,7 @@ import io
 import struct
 import zipfile
 from datetime import datetime, timezone
+from types import SimpleNamespace
 
 import olefile
 import pytest
@@ -9,6 +10,7 @@ from docx import Document
 from fastapi.testclient import TestClient
 from pptx import Presentation
 
+import main as main_module
 from main import app
 from metadata_editor import (
     MAX_TOTAL_UNCOMPRESSED_BYTES,
@@ -28,6 +30,14 @@ client = TestClient(app)
 
 # Requests must carry an allowed Origin now that CORS is restricted.
 ORIGIN = {"Origin": "https://www.newfiledate.com"}
+
+
+@pytest.fixture(autouse=True)
+def reset_rate_limiter():
+    """Clear the per-instance limiter so tests do not exhaust each other's quota."""
+    main_module.reset_rate_limit_state()
+    yield
+    main_module.reset_rate_limit_state()
 
 
 # ---------------------------------------------------------------------------
@@ -518,6 +528,51 @@ def test_api_does_not_leak_internal_exception_text():
         import main as main_module
 
         main_module.build_output_zip = original
+
+
+def test_rate_limiter_rejects_a_flood_before_reading_files():
+    docx = make_docx_bytes()
+
+    def send(ip: str):
+        return client.post(
+            "/api/process-metadata",
+            data={"target_time": "2023-05-15T14:30:00"},
+            files=[("files", ("test.docx", docx, "application/octet-stream"))],
+            headers={**ORIGIN, "x-real-ip": ip},
+        )
+
+    statuses = [send("203.0.113.9").status_code for _ in range(main_module.RATE_LIMIT_MAX_REQUESTS + 3)]
+
+    assert statuses[: main_module.RATE_LIMIT_MAX_REQUESTS] == [200] * main_module.RATE_LIMIT_MAX_REQUESTS
+    assert statuses[main_module.RATE_LIMIT_MAX_REQUESTS :] == [429, 429, 429]
+
+    blocked = send("203.0.113.9")
+    assert blocked.headers["Retry-After"] == str(main_module.RATE_LIMIT_WINDOW_SECONDS)
+
+    # A different caller is unaffected.
+    assert send("198.51.100.7").status_code == 200
+
+
+def test_rate_limiter_table_stays_bounded():
+    """The limiter must not become a memory-exhaustion vector itself."""
+    for i in range(main_module.RATE_LIMIT_MAX_TRACKED_CLIENTS + 500):
+        main_module._rate_limit_exceeded(f"10.0.{i // 256}.{i % 256}")
+
+    assert len(main_module._request_times) <= main_module.RATE_LIMIT_MAX_TRACKED_CLIENTS
+
+
+def test_rate_limit_key_prefers_platform_header():
+    request = SimpleNamespace(
+        headers={"x-real-ip": "203.0.113.5", "x-forwarded-for": "1.2.3.4, 5.6.7.8"},
+        client=SimpleNamespace(host="10.0.0.1"),
+    )
+    assert main_module._client_key(request) == "203.0.113.5"
+
+    forwarded_only = SimpleNamespace(
+        headers={"x-forwarded-for": "1.2.3.4, 5.6.7.8"},
+        client=SimpleNamespace(host="10.0.0.1"),
+    )
+    assert main_module._client_key(forwarded_only) == "1.2.3.4"
 
 
 def test_cors_does_not_allow_arbitrary_origins():

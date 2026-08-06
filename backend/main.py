@@ -1,8 +1,10 @@
 import logging
 import os
-from typing import List
+import time
+from collections import OrderedDict, deque
+from typing import Deque, List
 
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 
@@ -40,10 +42,72 @@ ALLOWED_ORIGINS = [
     if origin.strip()
 ]
 
+# --- Best-effort rate limiting ----------------------------------------------
+# This is per-instance only. A serverless platform runs many instances, so an
+# attacker gets roughly (instances x limit) requests -- it is NOT a substitute
+# for edge rate limiting (see "Rate limiting" in README.md). It is still worth
+# having: it rejects a sustained flood before any file bytes are read, which is
+# where the memory and CPU cost lives.
+RATE_LIMIT_WINDOW_SECONDS = 60
+RATE_LIMIT_MAX_REQUESTS = 20
+# Bounds the tracking table so the limiter cannot itself become a memory leak.
+RATE_LIMIT_MAX_TRACKED_CLIENTS = 10_000
+
+_request_times: "OrderedDict[str, Deque[float]]" = OrderedDict()
+
+
+def reset_rate_limit_state() -> None:
+    """Clear the tracking table. Used by tests."""
+    _request_times.clear()
+
+
+def _client_key(request: Request) -> str:
+    """Identify the caller for rate limiting.
+
+    On Vercel `x-real-ip` and `x-forwarded-for` are set by the platform edge.
+    Both are client-controllable when the app is self-hosted without a proxy, so
+    this is an abuse heuristic, not an authentication signal.
+    """
+    real_ip = request.headers.get("x-real-ip")
+    if real_ip:
+        return real_ip.strip()
+
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+
+    return request.client.host if request.client else "unknown"
+
+
+def _rate_limit_exceeded(key: str) -> bool:
+    now = time.monotonic()
+    cutoff = now - RATE_LIMIT_WINDOW_SECONDS
+
+    timestamps = _request_times.get(key)
+    if timestamps is None:
+        timestamps = deque()
+        _request_times[key] = timestamps
+
+    while timestamps and timestamps[0] < cutoff:
+        timestamps.popleft()
+
+    _request_times.move_to_end(key)
+
+    # Drop the least recently seen clients once the table is full.
+    while len(_request_times) > RATE_LIMIT_MAX_TRACKED_CLIENTS:
+        _request_times.popitem(last=False)
+
+    if len(timestamps) >= RATE_LIMIT_MAX_REQUESTS:
+        return True
+
+    timestamps.append(now)
+    return False
+
+
 app = FastAPI(
     title="NewFileDate Backend API",
     description="Track B deep document metadata editing",
-    version="4.0.0",
+    version="4.1.0",
 )
 
 app.add_middleware(
@@ -57,11 +121,12 @@ app.add_middleware(
 
 @app.get("/api/health")
 def health_check():
-    return {"status": "ok", "service": "NewFileDate API", "version": "4.0.0"}
+    return {"status": "ok", "service": "NewFileDate API", "version": "4.1.0"}
 
 
 @app.post("/api/process-metadata")
 async def process_metadata(
+    request: Request,
     files: List[UploadFile] = File(...),
     target_time: str = Form(...),
     tz_offset_minutes: int | None = Form(default=None),
@@ -72,6 +137,15 @@ async def process_metadata(
     follows the JavaScript `Date.getTimezoneOffset()` convention and lets the
     server derive the UTC instant that HWP and OOXML need.
     """
+    # Checked first: rejecting here costs nothing, whereas the work below reads
+    # every uploaded file into memory.
+    if _rate_limit_exceeded(_client_key(request)):
+        raise HTTPException(
+            status_code=429,
+            detail="Too many requests. Please wait a moment and try again.",
+            headers={"Retry-After": str(RATE_LIMIT_WINDOW_SECONDS)},
+        )
+
     if not files:
         raise HTTPException(status_code=400, detail="No files provided.")
 

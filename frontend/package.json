@@ -10,6 +10,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc -b --force",
+    "csp:check": "node ../tools/check-csp-hashes.mjs",
+    "csp:update": "node ../tools/check-csp-hashes.mjs --write",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -48,21 +48,12 @@
 
     <!-- Google tag (gtag.js) - Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EW7NH9LPSP"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-EW7NH9LPSP', {
-        send_page_view: true,
-        anonymize_ip: true
-      });
-    </script>
+    <!-- Bootstrap kept external so the CSP can forbid inline script. -->
+    <script src="/ga-init.js"></script>
 
     <!--
-      Structured data describes this product only. It previously listed
-      "NewFileTime" (a separate third-party product) as an alternateName, which
-      asserts an identity this service does not have.
+      Structured data. The CSP allowlists this block by hash; run
+      `npm run csp:check` after editing it (CI enforces the same check).
     -->
     <script type="application/ld+json">
     {
