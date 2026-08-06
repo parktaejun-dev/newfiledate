@@ -174,6 +174,28 @@ def modify_ooxml_metadata(file_bytes: bytes, target_utc_dt: datetime) -> tuple[b
         return file_bytes, False
 
 
+def modify_exif_metadata(file_bytes: bytes, target_utc_dt: datetime) -> tuple[bytes, bool]:
+    """
+    Modifies EXIF metadata in JPEG images.
+    Replaces YYYY:MM:DD HH:MM:SS in EXIF DateTime, DateTimeOriginal, DateTimeDigitized.
+    """
+    try:
+        if not file_bytes.startswith(b'\xff\xd8'):
+            return file_bytes, False
+
+        kst_dt = target_utc_dt.astimezone(KST)
+        formatted_str = kst_dt.strftime('%Y:%m:%d %H:%M:%S').encode('ascii')
+
+        import re
+        date_pattern = re.compile(b'\\d{4}:\\d{2}:\\d{2} \\d{2}:\\d{2}:\\d{2}')
+        
+        modified_bytes, count = date_pattern.subn(formatted_str, file_bytes)
+        return modified_bytes, (count > 0)
+    except Exception as e:
+        logger.warning(f"[EXIF Metadata Error] {e}")
+        return file_bytes, False
+
+
 def process_file_metadata(filename: str, file_bytes: bytes, target_time_str: str) -> tuple[bytes, bool, datetime]:
     """
     Processes a single file's metadata based on its extension.
@@ -186,10 +208,13 @@ def process_file_metadata(filename: str, file_bytes: bytes, target_time_str: str
         modified_bytes, success = modify_hwp_metadata(file_bytes, target_utc_dt)
     elif ext in ('pptx', 'docx'):
         modified_bytes, success = modify_ooxml_metadata(file_bytes, target_utc_dt)
+    elif ext in ('jpg', 'jpeg'):
+        modified_bytes, success = modify_exif_metadata(file_bytes, target_utc_dt)
     else:
         modified_bytes, success = file_bytes, False
 
     return modified_bytes, success, target_utc_dt
+
 
 
 def build_output_zip(files_data: list[tuple[str, bytes]], target_time_str: str) -> bytes:
