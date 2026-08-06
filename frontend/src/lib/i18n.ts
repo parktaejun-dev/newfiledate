@@ -37,8 +37,8 @@ export const translations: Record<Language, TranslationDictionary> = {
   en: {
     brandSubtitle: 'Date Fix',
     heroTitle: 'File Date Fixer',
-    privacyLocal: '🔒 Processed entirely in your browser — this file is never uploaded',
-    privacyUpload: '⚠️ Pro mode uploads the document to our server, edits it, and discards it — nothing is stored',
+    privacyLocal: '🔒 File Date (OS) Mode: 100% In-Browser (No server upload)',
+    privacyUpload: '⚠️ Pro Mode: Document uploaded for metadata edit & erased immediately (Zero disk storage)',
     privacyPolicy: 'Privacy',
     uploadTitle: '1. Select Files',
     clearAll: 'Clear',
@@ -70,8 +70,8 @@ export const translations: Record<Language, TranslationDictionary> = {
   ko: {
     brandSubtitle: '날짜 수정 툴',
     heroTitle: '파일 날짜 변경',
-    privacyLocal: '🔒 브라우저 안에서만 처리 — 파일이 서버로 전송되지 않습니다',
-    privacyUpload: '⚠️ Pro 모드는 문서를 서버로 전송해 수정 후 즉시 폐기합니다 — 저장하지 않습니다',
+    privacyLocal: '🔒 일반 파일 날짜 모드: 브라우저 로컬 100% 처리 (서버 전송 NO)',
+    privacyUpload: '⚠️ Pro 모드: HWP/PPT 메타데이터 수정을 위해 서버 전송 후 즉시 삭제 (저장 NO)',
     privacyPolicy: '개인정보처리방침',
     uploadTitle: '1. 파일 선택',
     clearAll: '비우기',
