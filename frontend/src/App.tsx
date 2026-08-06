@@ -650,7 +650,7 @@ export function App() {
       {/* 3. Minimal Footer */}
       <footer role="contentinfo" style={{ minHeight: '34px', borderTop: '2px solid #09090b', background: '#ffffff', flexShrink: 0, textAlign: 'center', color: '#64748b', fontSize: '0.68rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', padding: '4px 8px' }}>
         <span>{t.footerRights}</span>
-        <a href="/privacy.html" style={{ color: '#2563eb', fontWeight: 800 }}>{t.privacyPolicy}</a>
+        <a href={`/privacy.html?lang=${lang}`} style={{ color: '#2563eb', fontWeight: 800 }}>{t.privacyPolicy}</a>
       </footer>
     </div>
   );

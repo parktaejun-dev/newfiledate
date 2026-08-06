@@ -20,10 +20,32 @@
       }
       header {
         border-bottom: 2px solid #09090b;
-        padding: 14px 16px;
-        font-weight: 800;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #ffffff;
+        position: sticky;
+        top: 0;
+        z-index: 10;
       }
-      header a { color: #09090b; text-decoration: none; }
+      header a { color: #09090b; text-decoration: none; font-weight: 800; font-size: 0.95rem; }
+      .lang-btn {
+        background: #ffffff;
+        border: 2px solid #09090b;
+        border-radius: 6px;
+        padding: 4px 12px;
+        color: #09090b;
+        font-size: 0.8rem;
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 2px 2px 0px #09090b;
+        transition: transform 0.1s ease;
+      }
+      .lang-btn:active {
+        transform: translate(1px, 1px);
+        box-shadow: 1px 1px 0px #09090b;
+      }
       main { max-width: 780px; margin: 0 auto; padding: 28px 20px 64px; }
       h1 { font-size: 1.5rem; margin: 0 0 4px; letter-spacing: -0.02em; }
       h2 { font-size: 1.05rem; margin: 32px 0 8px; border-left: 4px solid #2563eb; padding-left: 10px; }
@@ -37,117 +59,173 @@
         padding: 10px 14px; margin: 14px 0;
       }
       .callout.warn { background: #fffbeb; }
-      hr { border: none; border-top: 2px solid #09090b; margin: 44px 0 28px; }
-      footer { text-align: center; color: #64748b; font-size: 0.8rem; padding: 20px; }
+      .lang-sec { display: none; }
+      .lang-sec.active { display: block; }
+      footer { text-align: center; color: #64748b; font-size: 0.8rem; padding: 20px; border-top: 2px solid #09090b; margin-top: 44px; }
     </style>
   </head>
   <body>
-    <header><a href="/">← NewFileDate</a></header>
+    <header>
+      <a href="/">← NewFileDate</a>
+      <button id="toggle-lang-btn" class="lang-btn" aria-label="Language selector">
+        🌐 English (EN)
+      </button>
+    </header>
     <main>
-      <h1>개인정보처리방침</h1>
-      <p class="updated">최종 개정일: 2026-08-06</p>
+      <!-- KOREAN SECTION -->
+      <div id="sec-ko" class="lang-sec active">
+        <h1>개인정보처리방침</h1>
+        <p class="updated">최종 개정일: 2026-08-06</p>
 
-      <h2>1. 파일 처리 방식</h2>
-      <p>본 서비스는 두 가지 모드를 제공하며, 파일 처리 위치가 서로 다릅니다.</p>
-      <table>
-        <thead>
-          <tr><th>모드</th><th>처리 위치</th><th>서버 전송</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>일반 파일 날짜 (OS)</strong></td>
-            <td>이용자 브라우저 메모리</td>
-            <td>없음 (100% 로컬 처리)</td>
-          </tr>
-          <tr>
-            <td><strong>HWP / PPT 작성일 (Pro)</strong></td>
-            <td>서비스 서버 (메모리 내 변환)</td>
-            <td>있음 (처리 후 즉시 폐기)</td>
-          </tr>
-        </tbody>
-      </table>
+        <h2>1. 파일 처리 방식</h2>
+        <p>본 서비스는 두 가지 모드를 제공하며, 파일 처리 위치가 서로 다릅니다.</p>
+        <table>
+          <thead>
+            <tr><th>모드</th><th>처리 위치</th><th>서버 전송</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>일반 파일 날짜 (OS)</strong></td>
+              <td>이용자 브라우저 메모리</td>
+              <td>없음 (100% 로컬 처리)</td>
+            </tr>
+            <tr>
+              <td><strong>HWP / PPT 작성일 (Pro)</strong></td>
+              <td>서비스 서버 (메모리 내 변환)</td>
+              <td>있음 (처리 후 즉시 폐기)</td>
+            </tr>
+          </tbody>
+        </table>
 
-      <div class="callout">
-        <strong>일반 파일 날짜 모드:</strong> 파일이 이용자의 브라우저를 벗어나지 않습니다.
-        압축 및 날짜 변경이 전부 기기 안에서 이루어지며 서버로 전송되지 않습니다.
+        <div class="callout">
+          <strong>일반 파일 날짜 모드:</strong> 파일이 이용자의 브라우저를 벗어나지 않습니다.
+          압축 및 날짜 변경이 전부 기기 안에서 이루어지며 서버로 전송되지 않습니다.
+        </div>
+
+        <div class="callout warn">
+          <strong>Pro 모드:</strong> 문서 내부 메타데이터를 수정하려면 파일을 서버로 전송해야 합니다.
+          전송된 파일은 요청 처리 중에만 메모리에 존재하며, 결과 파일을 반환한 뒤 즉시 폐기됩니다.
+          디스크나 데이터베이스에 저장하지 않고, 별도로 보관·열람·제3자 제공하지 않습니다.
+        </div>
+
+        <h2>2. 수집하는 정보</h2>
+        <p>회원가입이 없으며 이름·이메일 등 개인 계정 정보를 수집하지 않습니다.</p>
+        <table>
+          <thead>
+            <tr><th>항목</th><th>목적</th><th>보유 기간</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>업로드 파일 및 파일명 (Pro 모드)</td>
+              <td>문서 메타데이터 수정</td>
+              <td>요청 처리 중에만 메모리에 존재, 응답 후 즉시 폐기</td>
+            </tr>
+            <tr>
+              <td>접속 로그 (IP, User-Agent, 요청 시각)</td>
+              <td>서비스 운영 및 보안 보호</td>
+              <td>호스팅 사업자(Vercel) 정책에 따름</td>
+            </tr>
+            <tr>
+              <td>이용 통계 (페이지뷰, 클릭 통계)</td>
+              <td>서비스 품질 개선</td>
+              <td>Google Analytics 정책에 따름 (IP 익명화)</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>이용 통계에는 파일 내용이나 파일명이 포함되지 않습니다.</p>
+
+        <h2>3. 쿠키 및 제3자 서비스</h2>
+        <p>본 서비스는 다음 분석 및 웹 호스팅 도구를 사용합니다.</p>
+        <ul>
+          <li><strong>Google Analytics 4</strong> — 이용 통계 분석 (IP 익명화 적용).</li>
+          <li><strong>Vercel Analytics / Speed Insights</strong> — 웹 성능 및 트래픽 측정.</li>
+        </ul>
+
+        <h2>4. 안전성 확보 조치</h2>
+        <ul>
+          <li>전 구간 HTTPS 암호화 전송</li>
+          <li>Pro 모드 업로드 파일의 디스크 저장 없음 (메모리 처리 후 즉시 삭제)</li>
+          <li>업로드 파일 형식·크기·개수 제한 적용</li>
+        </ul>
       </div>
 
-      <div class="callout warn">
-        <strong>Pro 모드:</strong> 문서 내부 메타데이터를 수정하려면 파일을 서버로 전송해야 합니다.
-        전송된 파일은 요청 처리 중에만 메모리에 존재하며, 결과 파일을 반환한 뒤 즉시 폐기됩니다.
-        디스크나 데이터베이스에 저장하지 않고, 별도로 보관·열람·제3자 제공하지 않습니다.
+      <!-- ENGLISH SECTION -->
+      <div id="sec-en" class="lang-sec">
+        <h1>Privacy Policy</h1>
+        <p class="updated">Last updated: August 6, 2026</p>
+
+        <h2>1. How Files Are Handled</h2>
+        <p>This service provides two processing modes with distinct execution environments:</p>
+        <table>
+          <thead>
+            <tr><th>Mode</th><th>Processing Location</th><th>Server Transmission</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>File Date (OS)</strong></td>
+              <td>User Browser Memory</td>
+              <td>None (100% Local)</td>
+            </tr>
+            <tr>
+              <td><strong>HWP / PPT (Pro)</strong></td>
+              <td>Service Server (Memory Only)</td>
+              <td>Transmitted (Discarded Immediately)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <strong>File Date (OS) Mode:</strong> Your files never leave your web browser.
+          All date modifications and ZIP archives are processed entirely on your local device.
+        </div>
+
+        <div class="callout warn">
+          <strong>Pro Mode:</strong> Modifying embedded document metadata requires processing on our server.
+          Uploaded files exist strictly in server RAM for the duration of the request and are immediately erased once the zip file is generated. They are never written to disk or retained.
+        </div>
+
+        <h2>2. Information Collected</h2>
+        <p>There are no user accounts, and we do not collect personal identifiers such as names or emails.</p>
+        <table>
+          <thead>
+            <tr><th>Data Category</th><th>Purpose</th><th>Retention Period</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Uploaded File & Filename (Pro Mode)</td>
+              <td>Document metadata editing</td>
+              <td>RAM only during request execution; erased immediately after</td>
+            </tr>
+            <tr>
+              <td>Access Logs (IP, User-Agent, Timestamp)</td>
+              <td>Operational security</td>
+              <td>Subject to Vercel Hosting Policy</td>
+            </tr>
+            <tr>
+              <td>Usage Statistics (Pageviews, Clicks)</td>
+              <td>Service quality improvement</td>
+              <td>Subject to Google Analytics Policy (IP Anonymised)</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Usage statistics never contain file names or file contents.</p>
+
+        <h2>3. Cookies & Third-Party Services</h2>
+        <p>We use the following analytics and hosting tools:</p>
+        <ul>
+          <li><strong>Google Analytics 4</strong> — Anonymous usage statistics (IP anonymisation enabled).</li>
+          <li><strong>Vercel Analytics / Speed Insights</strong> — Performance and traffic metrics.</li>
+        </ul>
+
+        <h2>4. Security Measures</h2>
+        <ul>
+          <li>100% Encrypted HTTPS transmission</li>
+          <li>Zero disk storage for uploaded files (in-memory processing)</li>
+          <li>Strict request payload limits and filename sanitisation</li>
+        </ul>
       </div>
-
-      <h2>2. 수집하는 정보</h2>
-      <p>회원가입이 없으며 이름·이메일 등 개인 계정 정보를 수집하지 않습니다.</p>
-      <table>
-        <thead>
-          <tr><th>항목</th><th>목적</th><th>보유 기간</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>업로드 파일 및 파일명 (Pro 모드에 한함)</td>
-            <td>문서 메타데이터 수정</td>
-            <td>요청 처리 중에만 메모리에 존재, 응답 후 즉시 폐기</td>
-          </tr>
-          <tr>
-            <td>접속 로그 (IP, User-Agent, 요청 시각)</td>
-            <td>서비스 운영 및 보안 보호</td>
-            <td>호스팅 사업자(Vercel) 정책에 따름</td>
-          </tr>
-          <tr>
-            <td>이용 통계 (페이지뷰, 클릭 통계)</td>
-            <td>서비스 품질 개선</td>
-            <td>Google Analytics 정책에 따름 (IP 익명화)</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>이용 통계에는 파일 내용이나 파일명이 포함되지 않습니다.</p>
-
-      <h2>3. 쿠키 및 제3자 서비스</h2>
-      <p>본 서비스는 다음 분석 및 웹 호스팅 도구를 사용합니다.</p>
-      <ul>
-        <li><strong>Google Analytics 4</strong> — 이용 통계 분석 (IP 익명화 적용).</li>
-        <li><strong>Vercel Analytics / Speed Insights</strong> — 웹 성능 및 트래픽 측정.</li>
-      </ul>
-
-      <h2>4. 안전성 확보 조치</h2>
-      <ul>
-        <li>전 구간 HTTPS 암호화 전송</li>
-        <li>Pro 모드 업로드 파일의 디스크 저장 없음 (메모리 처리 후 즉시 삭제)</li>
-        <li>업로드 파일 형식·크기·개수 제한 적용</li>
-      </ul>
-
-      <hr />
-
-      <h1>Privacy Policy</h1>
-      <p class="updated">Last updated: 2026-08-06</p>
-
-      <h2>1. How files are handled</h2>
-      <p>
-        <strong>File Date (OS) mode</strong> processes files entirely inside your web browser.
-        Nothing is transmitted to any server.
-      </p>
-      <p>
-        <strong>HWP / PPT (Pro) mode</strong> sends the document to the server to edit
-        embedded metadata inside it. Uploaded files exist only in server memory for the
-        duration of the request and are immediately discarded after returning the modified ZIP file. They are
-        never written to disk or retained.
-      </p>
-
-      <h2>2. Information collected</h2>
-      <p>
-        There are no user accounts and we do not collect names or email addresses. Usage statistics
-        never include file names or file contents.
-      </p>
-
-      <h2>3. Security</h2>
-      <ul>
-        <li>100% Encrypted HTTPS transmission</li>
-        <li>No disk storage for uploaded files in memory</li>
-        <li>Strict request payload limits and sanitisation</li>
-      </ul>
     </main>
-    <footer>© 2026 NewFileDate</footer>
+    <footer>© 2026 NewFileDate. All Rights Reserved.</footer>
+    <script src="/privacy-lang.js"></script>
   </body>
 </html>
