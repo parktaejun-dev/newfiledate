@@ -1,26 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 :root {
-  --bg-main: #f8f6f0;
+  --bg-main: #ffffff;
+  --bg-subtle: #f8fafc;
   --bg-card: #ffffff;
-  --bg-card-hover: #faf9f5;
-  --border-color: #1a1a1a;
+  --bg-card-hover: #f1f5f9;
+  --border-color: #09090b;
   --border-focus: #2563eb;
   --primary: #2563eb;
   --primary-hover: #1d4ed8;
-  --primary-glow: rgba(37, 99, 235, 0.15);
-  --retro-accent: #e05638;
+  --retro-accent: #ea580c;
   --pro-gold: #f59e0b;
-  --pro-glow: rgba(245, 158, 11, 0.2);
-  --text-main: #1a1a1a;
-  --text-muted: #52525b;
-  --text-sub: #71717a;
+  --text-main: #09090b;
+  --text-muted: #475569;
+  --text-sub: #64748b;
   --radius-lg: 12px;
   --radius-md: 8px;
   --radius-sm: 6px;
-  --shadow-retro: 3px 3px 0px #1a1a1a;
-  --shadow-retro-lg: 5px 5px 0px #1a1a1a;
-  --shadow-retro-hover: 1px 1px 0px #1a1a1a;
+  --shadow-retro: 3px 3px 0px #09090b;
+  --shadow-retro-lg: 5px 5px 0px #09090b;
+  --shadow-retro-hover: 1px 1px 0px #09090b;
 }
 
 * {
@@ -37,8 +36,9 @@ body {
   line-height: 1.5;
   overflow-x: hidden;
   background-image: 
-    radial-gradient(#d4d4d8 1px, transparent 1px);
-  background-size: 18px 18px;
+    linear-gradient(to right, #f1f5f9 1px, transparent 1px),
+    linear-gradient(to bottom, #f1f5f9 1px, transparent 1px);
+  background-size: 24px 24px;
   background-attachment: fixed;
 }
 
@@ -57,12 +57,12 @@ body {
 .drop-zone {
   border: 2px dashed var(--border-color);
   border-radius: var(--radius-md);
-  background: #faf9f5;
+  background: #fafafa;
   transition: all 0.15s ease-in-out;
 }
 
 .drop-zone:hover {
-  background: #f4f2ea;
+  background: #f4f4f5;
 }
 
 .drop-zone.active {
@@ -74,34 +74,34 @@ body {
 
 .badge-pro {
   background: var(--pro-gold);
-  color: #1a1a1a;
-  font-weight: 700;
+  color: #09090b;
+  font-weight: 800;
   font-size: 0.725rem;
   padding: 2px 8px;
   border-radius: 4px;
-  border: 1.5px solid #1a1a1a;
+  border: 1.5px solid #09090b;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  box-shadow: 2px 2px 0px #1a1a1a;
+  box-shadow: 2px 2px 0px #09090b;
 }
 
 .badge-free {
   background: #eff6ff;
   color: #2563eb;
-  border: 1.5px solid #1a1a1a;
-  font-weight: 700;
+  border: 1.5px solid #09090b;
+  font-weight: 800;
   font-size: 0.725rem;
   padding: 2px 8px;
   border-radius: 4px;
-  box-shadow: 2px 2px 0px #1a1a1a;
+  box-shadow: 2px 2px 0px #09090b;
 }
 
 .btn-primary {
   background: #2563eb;
   color: #ffffff;
   font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  border: 2px solid #1a1a1a;
+  font-weight: 800;
+  border: 2px solid #09090b;
   border-radius: var(--radius-md);
   padding: 12px 24px;
   cursor: pointer;
@@ -115,7 +115,7 @@ body {
 
 .btn-primary:hover:not(:disabled) {
   transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0px #1a1a1a;
+  box-shadow: 4px 4px 0px #09090b;
   background: #1d4ed8;
 }
 
@@ -132,11 +132,11 @@ body {
 }
 
 .btn-pro {
-  background: #f59e0b;
-  color: #1a1a1a;
+  background: #ea580c;
+  color: #ffffff;
   font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  border: 2px solid #1a1a1a;
+  font-weight: 800;
+  border: 2px solid #09090b;
   border-radius: var(--radius-md);
   padding: 12px 24px;
   cursor: pointer;
@@ -150,8 +150,8 @@ body {
 
 .btn-pro:hover:not(:disabled) {
   transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0px #1a1a1a;
-  background: #d97706;
+  box-shadow: 4px 4px 0px #09090b;
+  background: #c2410c;
 }
 
 .btn-pro:active:not(:disabled) {
@@ -180,13 +180,13 @@ body {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f4f2ea;
-  border-left: 1px solid #1a1a1a;
+  background: #f4f4f5;
+  border-left: 1px solid #09090b;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1a1a1a;
+  background: #09090b;
   border-radius: 0px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #27272a;
 }

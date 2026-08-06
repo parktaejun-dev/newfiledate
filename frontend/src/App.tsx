@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { 
-  Clock, 
   UploadCloud, 
   FileText, 
   AlertTriangle, 
@@ -239,13 +238,15 @@ export function App() {
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--bg-main)' }}>
       
       {/* 1. Header */}
-      <header role="banner" style={{ height: '52px', borderBottom: '2px solid #1a1a1a', background: '#ffffff', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+      <header role="banner" style={{ height: '54px', borderBottom: '2px solid #09090b', background: '#ffffff', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
         <div style={{ maxWidth: '1100px', width: '100%', margin: '0 auto', padding: '0 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{ background: '#1a1a1a', padding: '6px', borderRadius: '6px', display: 'flex' }}>
-              <Clock style={{ width: '16px', height: '16px', color: '#ffffff' }} />
-            </div>
-            <span style={{ fontSize: '1.1rem', fontWeight: 800, color: '#1a1a1a', fontFamily: "'Space Grotesk', sans-serif" }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <img 
+              src="/logo.png" 
+              alt="NewFileDate Logo" 
+              style={{ width: '28px', height: '28px', objectFit: 'contain' }} 
+            />
+            <span style={{ fontSize: '1.15rem', fontWeight: 800, color: '#09090b', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.03em' }}>
               NewFileDate
             </span>
           </div>
@@ -255,16 +256,16 @@ export function App() {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '4px',
+              gap: '6px',
               background: '#ffffff',
-              border: '2px solid #1a1a1a',
+              border: '2px solid #09090b',
               borderRadius: '6px',
               padding: '4px 10px',
-              color: '#1a1a1a',
+              color: '#09090b',
               fontSize: '0.75rem',
-              fontWeight: 700,
+              fontWeight: 800,
               cursor: 'pointer',
-              boxShadow: '2px 2px 0px #1a1a1a'
+              boxShadow: '2px 2px 0px #09090b'
             }}
             aria-label="Language selector"
           >
@@ -283,15 +284,22 @@ export function App() {
         {/* Single Center 1-Column App Container (Max-Width 460px) */}
         <main id="main-content" role="main" style={{ width: '100%', maxWidth: '460px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
           
-          {/* Main Title */}
-          <h1 id="hero-heading" style={{ fontSize: '1.5rem', fontWeight: 800, letterSpacing: '-0.02em', textAlign: 'center', color: '#1a1a1a', margin: 0, fontFamily: "'Space Grotesk', sans-serif" }}>
-            {t.heroTitle}
-          </h1>
+          {/* Main Hero Header with Logo Branding */}
+          <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+            <img 
+              src="/logo.png" 
+              alt="NewFileDate Logo Brand" 
+              style={{ width: '52px', height: '52px', objectFit: 'contain', filter: 'drop-shadow(2px 2px 0px #09090b)' }} 
+            />
+            <h1 id="hero-heading" style={{ fontSize: '1.45rem', fontWeight: 800, letterSpacing: '-0.03em', color: '#09090b', margin: 0, fontFamily: "'Space Grotesk', sans-serif" }}>
+              {t.heroTitle}
+            </h1>
+          </div>
 
           {/* SECTION 1: File Upload Box */}
           <article className="glass-panel" style={{ padding: '12px 14px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-              <h2 style={{ fontSize: '0.85rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', color: '#1a1a1a', margin: 0 }}>
+              <h2 style={{ fontSize: '0.85rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px', color: '#09090b', margin: 0 }}>
                 <UploadCloud style={{ width: '15px', height: '15px', color: '#2563eb' }} />
                 {t.uploadTitle}
               </h2>
@@ -299,7 +307,7 @@ export function App() {
                 <button 
                   onClick={clearAllFiles} 
                   aria-label={t.clearAll}
-                  style={{ background: 'transparent', border: 'none', color: '#dc2626', fontSize: '0.75rem', cursor: 'pointer', fontWeight: 700 }}
+                  style={{ background: 'transparent', border: 'none', color: '#dc2626', fontSize: '0.75rem', cursor: 'pointer', fontWeight: 800 }}
                 >
                   {t.clearAll} ({files.length})
                 </button>
@@ -314,7 +322,7 @@ export function App() {
               onDragLeave={handleDrag}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
-              style={{ padding: '18px 10px', textAlign: 'center', cursor: 'pointer', position: 'relative' }}
+              style={{ padding: '16px 10px', textAlign: 'center', cursor: 'pointer', position: 'relative' }}
               role="button"
               tabIndex={0}
               aria-label={t.dragDropText}
@@ -328,10 +336,10 @@ export function App() {
                 aria-label="file-input"
               />
               <HardDrive style={{ width: '18px', height: '18px', color: '#2563eb', margin: '0 auto 4px auto', display: 'block' }} />
-              <p style={{ fontWeight: 700, fontSize: '0.8rem', marginBottom: '1px', color: '#1a1a1a' }}>
+              <p style={{ fontWeight: 800, fontSize: '0.82rem', marginBottom: '2px', color: '#09090b' }}>
                 {t.dragDropText}
               </p>
-              <p style={{ color: '#52525b', fontSize: '0.68rem', fontWeight: 500 }}>
+              <p style={{ color: '#64748b', fontSize: '0.68rem', fontWeight: 600 }}>
                 {t.dragDropSub}
               </p>
             </div>
@@ -340,21 +348,21 @@ export function App() {
             {files.length > 0 && (
               <div style={{ marginTop: '8px', maxHeight: '100px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                 {files.map((item) => (
-                  <div key={item.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 8px', background: '#faf9f5', border: '1.5px solid #1a1a1a', borderRadius: '6px', boxShadow: '2px 2px 0px #1a1a1a' }}>
+                  <div key={item.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 8px', background: '#ffffff', border: '1.5px solid #09090b', borderRadius: '6px', boxShadow: '2px 2px 0px #09090b' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
                       <FileText style={{ width: '12px', height: '12px', color: '#2563eb', flexShrink: 0 }} />
-                      <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#1a1a1a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#09090b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {item.name}
                       </span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span style={{ fontSize: '0.68rem', fontWeight: 600, color: item.size > VERCEL_MAX_PAYLOAD_BYTES && trackMode === 'B' ? '#dc2626' : '#52525b' }}>
+                      <span style={{ fontSize: '0.68rem', fontWeight: 700, color: item.size > VERCEL_MAX_PAYLOAD_BYTES && trackMode === 'B' ? '#dc2626' : '#64748b' }}>
                         {(item.size / 1024 / 1024).toFixed(1)}MB
                       </span>
                       <button 
                         onClick={(e) => { e.stopPropagation(); removeFile(item.id); }} 
                         aria-label={`${item.name} remove`}
-                        style={{ background: 'none', border: 'none', color: '#1a1a1a', cursor: 'pointer', display: 'flex' }}
+                        style={{ background: 'none', border: 'none', color: '#09090b', cursor: 'pointer', display: 'flex' }}
                       >
                         <X style={{ width: '12px', height: '12px' }} />
                       </button>
@@ -368,7 +376,7 @@ export function App() {
           {/* SECTION 2: Target Date Picker & Presets */}
           <article className="glass-panel" style={{ padding: '12px 14px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-              <h2 style={{ fontSize: '0.85rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', color: '#1a1a1a', margin: 0 }}>
+              <h2 style={{ fontSize: '0.85rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px', color: '#09090b', margin: 0 }}>
                 <Calendar style={{ width: '15px', height: '15px', color: '#2563eb' }} />
                 {t.dateSettingTitle}
               </h2>
@@ -387,39 +395,39 @@ export function App() {
                   width: '100%',
                   padding: '8px 10px',
                   background: '#ffffff',
-                  border: '2px solid #1a1a1a',
+                  border: '2px solid #09090b',
                   borderRadius: 'var(--radius-md)',
-                  color: '#1a1a1a',
-                  fontSize: '1rem',
-                  fontWeight: 700,
+                  color: '#09090b',
+                  fontSize: '0.95rem',
+                  fontWeight: 800,
                   fontFamily: 'inherit',
                   outline: 'none',
                   cursor: 'pointer',
-                  boxShadow: '3px 3px 0px #1a1a1a'
+                  boxShadow: '3px 3px 0px #09090b'
                 }}
               />
 
               {/* Compact One-Click Presets */}
               <div style={{ display: 'flex', gap: '4px' }}>
-                <button onClick={() => applyPreset('now')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #1a1a1a', borderRadius: '6px', color: '#1a1a1a', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 700, boxShadow: '2px 2px 0px #1a1a1a' }}>
+                <button onClick={() => applyPreset('now')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #09090b', borderRadius: '6px', color: '#09090b', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 800, boxShadow: '2px 2px 0px #09090b' }}>
                   {t.presetNow}
                 </button>
-                <button onClick={() => applyPreset('yesterday')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #1a1a1a', borderRadius: '6px', color: '#1a1a1a', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 700, boxShadow: '2px 2px 0px #1a1a1a' }}>
+                <button onClick={() => applyPreset('yesterday')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #09090b', borderRadius: '6px', color: '#09090b', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 800, boxShadow: '2px 2px 0px #09090b' }}>
                   {t.presetYesterday}
                 </button>
-                <button onClick={() => applyPreset('week')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #1a1a1a', borderRadius: '6px', color: '#1a1a1a', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 700, boxShadow: '2px 2px 0px #1a1a1a' }}>
+                <button onClick={() => applyPreset('week')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #09090b', borderRadius: '6px', color: '#09090b', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 800, boxShadow: '2px 2px 0px #09090b' }}>
                   {t.preset1WeekAgo}
                 </button>
-                <button onClick={() => applyPreset('month')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #1a1a1a', borderRadius: '6px', color: '#1a1a1a', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 700, boxShadow: '2px 2px 0px #1a1a1a' }}>
+                <button onClick={() => applyPreset('month')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #09090b', borderRadius: '6px', color: '#09090b', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 800, boxShadow: '2px 2px 0px #09090b' }}>
                   {t.preset1MonthAgo}
                 </button>
-                <button onClick={() => applyPreset('year')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #1a1a1a', borderRadius: '6px', color: '#1a1a1a', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 700, boxShadow: '2px 2px 0px #1a1a1a' }}>
+                <button onClick={() => applyPreset('year')} style={{ flex: 1, padding: '5px 2px', background: '#ffffff', border: '1.5px solid #09090b', borderRadius: '6px', color: '#09090b', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 800, boxShadow: '2px 2px 0px #09090b' }}>
                   {t.preset1YearAgo}
                 </button>
               </div>
 
               {/* Compact Seconds Slider & Preview Badge */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#faf9f5', border: '1.5px solid #1a1a1a', borderRadius: '6px', boxShadow: '2px 2px 0px #1a1a1a', padding: '6px 8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#f8fafc', border: '1.5px solid #09090b', borderRadius: '6px', boxShadow: '2px 2px 0px #09090b', padding: '6px 8px' }}>
                 <input 
                   id="seconds-slider"
                   type="range" 
@@ -430,7 +438,7 @@ export function App() {
                   onChange={(e) => setSelectedSecond(parseInt(e.target.value))}
                   style={{ flex: 1, accentColor: '#2563eb', cursor: 'pointer' }}
                 />
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", color: '#1a1a1a', whiteSpace: 'nowrap' }}>
+                <div style={{ fontSize: '0.78rem', fontWeight: 800, fontFamily: "'JetBrains Mono', monospace", color: '#09090b', whiteSpace: 'nowrap' }}>
                   {finalSnappedDate.toLocaleDateString()} {finalSnappedDate.toLocaleTimeString()}
                 </div>
               </div>
@@ -445,14 +453,14 @@ export function App() {
                 style={{
                   padding: '8px 10px',
                   borderRadius: 'var(--radius-md)',
-                  border: '2px solid #1a1a1a',
+                  border: '2px solid #09090b',
                   background: trackMode === 'A' ? '#2563eb' : '#ffffff',
-                  color: trackMode === 'A' ? '#ffffff' : '#1a1a1a',
-                  fontWeight: 700,
+                  color: trackMode === 'A' ? '#ffffff' : '#09090b',
+                  fontWeight: 800,
                   fontSize: '0.75rem',
                   cursor: 'pointer',
                   textAlign: 'center',
-                  boxShadow: trackMode === 'A' ? '3px 3px 0px #1a1a1a' : '2px 2px 0px #1a1a1a',
+                  boxShadow: trackMode === 'A' ? '3px 3px 0px #09090b' : '2px 2px 0px #09090b',
                   transition: 'all 0.1s ease'
                 }}
               >
@@ -464,14 +472,14 @@ export function App() {
                 style={{
                   padding: '8px 10px',
                   borderRadius: 'var(--radius-md)',
-                  border: '2px solid #1a1a1a',
-                  background: trackMode === 'B' ? '#f59e0b' : '#ffffff',
-                  color: '#1a1a1a',
-                  fontWeight: 700,
+                  border: '2px solid #09090b',
+                  background: trackMode === 'B' ? '#ea580c' : '#ffffff',
+                  color: trackMode === 'B' ? '#ffffff' : '#09090b',
+                  fontWeight: 800,
                   fontSize: '0.75rem',
                   cursor: 'pointer',
                   textAlign: 'center',
-                  boxShadow: trackMode === 'B' ? '3px 3px 0px #1a1a1a' : '2px 2px 0px #1a1a1a',
+                  boxShadow: trackMode === 'B' ? '3px 3px 0px #09090b' : '2px 2px 0px #09090b',
                   transition: 'all 0.1s ease'
                 }}
               >
@@ -481,9 +489,9 @@ export function App() {
 
             {/* Oversized Serverless Warning Tooltip */}
             {hasExceededServerlessLimit && (
-              <div style={{ marginBottom: '10px', padding: '6px 8px', background: '#fee2e2', border: '1.5px solid #1a1a1a', borderRadius: '6px', boxShadow: '2px 2px 0px #1a1a1a', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ marginBottom: '10px', padding: '6px 8px', background: '#fee2e2', border: '1.5px solid #09090b', borderRadius: '6px', boxShadow: '2px 2px 0px #09090b', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <AlertTriangle style={{ color: '#dc2626', width: '14px', height: '14px', flexShrink: 0 }} />
-                <p style={{ fontSize: '0.68rem', color: '#991b1b', margin: 0, fontWeight: 600 }}>
+                <p style={{ fontSize: '0.68rem', color: '#991b1b', margin: 0, fontWeight: 700 }}>
                   Track B는 4.5MB 이하만 가능합니다. 대용량은 OS 날짜 변경을 선택해 주세요!
                 </p>
               </div>
@@ -511,12 +519,12 @@ export function App() {
               {/* Progress Bar */}
               {isProcessing && (
                 <div style={{ width: '100%', marginTop: '6px' }}>
-                  <div style={{ background: '#e4e4e7', border: '1.5px solid #1a1a1a', borderRadius: '9999px', height: '8px', overflow: 'hidden' }}>
+                  <div style={{ background: '#e2e8f0', border: '1.5px solid #09090b', borderRadius: '9999px', height: '8px', overflow: 'hidden' }}>
                     <div 
                       style={{ 
                         height: '100%', 
                         width: `${progress}%`, 
-                        background: trackMode === 'B' ? '#f59e0b' : '#2563eb',
+                        background: trackMode === 'B' ? '#ea580c' : '#2563eb',
                         transition: 'width 0.3s ease'
                       }} 
                     />
@@ -535,7 +543,7 @@ export function App() {
       </div>
 
       {/* 3. Minimal Footer */}
-      <footer role="contentinfo" style={{ height: '32px', borderTop: '2px solid #1a1a1a', background: '#ffffff', flexShrink: 0, textAlign: 'center', color: '#52525b', fontSize: '0.68rem', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <footer role="contentinfo" style={{ height: '34px', borderTop: '2px solid #09090b', background: '#ffffff', flexShrink: 0, textAlign: 'center', color: '#64748b', fontSize: '0.68rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <p>{t.footerRights}</p>
       </footer>
     </div>
