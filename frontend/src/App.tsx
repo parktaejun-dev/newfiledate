@@ -238,15 +238,15 @@ export function App() {
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--bg-main)' }}>
       
       {/* 1. Header */}
-      <header role="banner" style={{ height: '54px', borderBottom: '2px solid #09090b', background: '#ffffff', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+      <header role="banner" style={{ height: '48px', borderBottom: '2px solid #09090b', background: '#ffffff', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
         <div style={{ maxWidth: '1100px', width: '100%', margin: '0 auto', padding: '0 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <img 
               src="/logo.png" 
               alt="NewFileDate Logo" 
-              style={{ width: '28px', height: '28px', objectFit: 'contain' }} 
+              style={{ width: '22px', height: '22px', objectFit: 'contain' }} 
             />
-            <span style={{ fontSize: '1.15rem', fontWeight: 800, color: '#09090b', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.03em' }}>
+            <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#09090b', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.03em' }}>
               NewFileDate
             </span>
           </div>
@@ -256,13 +256,13 @@ export function App() {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '6px',
+              gap: '4px',
               background: '#ffffff',
               border: '2px solid #09090b',
               borderRadius: '6px',
-              padding: '4px 10px',
+              padding: '3px 8px',
               color: '#09090b',
-              fontSize: '0.75rem',
+              fontSize: '0.72rem',
               fontWeight: 800,
               cursor: 'pointer',
               boxShadow: '2px 2px 0px #09090b'
@@ -276,25 +276,19 @@ export function App() {
       </header>
 
       {/* 2. Main Centered 1-Column Area with Side Ad Margins (No Scroll) */}
-      <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px', overflow: 'hidden' }}>
+      <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '12px', overflow: 'hidden' }}>
         
         {/* Left Side Ad Space Placeholder */}
         <aside style={{ flex: 1, maxWidth: '240px', height: '100%', display: 'none' }} className="ad-container-left" />
 
         {/* Single Center 1-Column App Container (Max-Width 460px) */}
-        <main id="main-content" role="main" style={{ width: '100%', maxWidth: '460px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <main id="main-content" role="main" style={{ width: '100%', maxWidth: '460px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
           
-          {/* Main Hero Header with Logo Branding */}
-          <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-            <img 
-              src="/logo.png" 
-              alt="NewFileDate Logo Brand" 
-              style={{ width: '52px', height: '52px', objectFit: 'contain', filter: 'drop-shadow(2px 2px 0px #09090b)' }} 
-            />
-            <h1 id="hero-heading" style={{ fontSize: '1.45rem', fontWeight: 800, letterSpacing: '-0.03em', color: '#09090b', margin: 0, fontFamily: "'Space Grotesk', sans-serif" }}>
-              {t.heroTitle}
-            </h1>
-          </div>
+          {/* Compact Main Title with Inline Icon */}
+          <h1 id="hero-heading" style={{ fontSize: '1.35rem', fontWeight: 800, letterSpacing: '-0.03em', textAlign: 'center', color: '#09090b', margin: 0, fontFamily: "'Space Grotesk', sans-serif", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+            <img src="/logo.png" alt="Logo" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
+            {t.heroTitle}
+          </h1>
 
           {/* SECTION 1: File Upload Box */}
           <article className="glass-panel" style={{ padding: '12px 14px' }}>
