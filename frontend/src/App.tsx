@@ -55,8 +55,8 @@ function extensionOf(name: string): string {
   return name.toLowerCase().split('.').pop() ?? '';
 }
 
-export function App() {
-  const [lang, setLang] = useState<Language>(detectDefaultLanguage());
+export function App({ initialLang }: { initialLang?: Language } = {}) {
+  const [lang, setLang] = useState<Language>(initialLang ?? detectDefaultLanguage());
   const t = translations[lang];
 
   const [files, setFiles] = useState<FileItem[]>([]);
@@ -641,6 +641,27 @@ export function App() {
             </div>
           )}
 
+          {/* SECTION 4: FAQ — the same strings feed the FAQPage JSON-LD in the
+              prerendered HTML, so visible text and structured data never drift. */}
+          <section className="glass-panel" style={{ padding: '12px 14px' }}>
+            <h2 style={{ fontSize: '0.85rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px', color: '#09090b', margin: '0 0 8px' }}>
+              <Info style={{ width: '15px', height: '15px', color: '#2563eb' }} />
+              {t.faqTitle}
+            </h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              {t.faqItems.map((item) => (
+                <details key={item.q} style={{ background: '#ffffff', border: '1.5px solid #09090b', borderRadius: '6px', boxShadow: '2px 2px 0px #09090b', padding: '6px 8px' }}>
+                  <summary style={{ fontSize: '0.72rem', fontWeight: 800, color: '#09090b', cursor: 'pointer' }}>
+                    {item.q}
+                  </summary>
+                  <p style={{ fontSize: '0.68rem', color: '#475569', fontWeight: 600, marginTop: '4px', lineHeight: 1.5 }}>
+                    {item.a}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </section>
+
         </main>
 
         <aside style={{ flex: 1, maxWidth: '240px', height: '100%', display: 'none' }} className="ad-container-right" />
@@ -650,6 +671,7 @@ export function App() {
       {/* 3. Minimal Footer */}
       <footer role="contentinfo" style={{ minHeight: '34px', borderTop: '2px solid #09090b', background: '#ffffff', flexShrink: 0, textAlign: 'center', color: '#64748b', fontSize: '0.68rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', padding: '4px 8px' }}>
         <span>{t.footerRights}</span>
+        <a href={lang === 'ko' ? '/q/' : '/en/q/'} style={{ color: '#2563eb', fontWeight: 800 }}>{t.footerGuides}</a>
         <a href={`/privacy.html?lang=${lang}`} style={{ color: '#2563eb', fontWeight: 800 }}>{t.privacyPolicy}</a>
       </footer>
     </div>

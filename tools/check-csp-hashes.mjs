@@ -14,31 +14,44 @@
  */
 
 import { createHash } from 'node:crypto';
-import { readFileSync, writeFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const HTML_PATH = resolve(ROOT, 'frontend/dist/index.html');
+const DIST_DIR = resolve(ROOT, 'frontend/dist');
 const VERCEL_PATH = resolve(ROOT, 'vercel.json');
 
 const write = process.argv.includes('--write');
 
-let html;
+function* walkHtml(dir) {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const p = join(dir, entry.name);
+    if (entry.isDirectory()) yield* walkHtml(p);
+    else if (entry.name.endsWith('.html')) yield p;
+  }
+}
+
+let htmlFiles;
 try {
-  html = readFileSync(HTML_PATH, 'utf8');
+  htmlFiles = [...walkHtml(DIST_DIR)];
 } catch {
-  console.error(`✗ ${HTML_PATH} not found — run "npm run build" in frontend/ first.`);
+  console.error(`✗ ${DIST_DIR} not found — run "npm run build" in frontend/ first.`);
   process.exit(1);
 }
 
 // Inline blocks only: anything with a src= attribute is covered by host rules.
-const inlineScripts = [...html.matchAll(/<script(?![^>]*\ssrc=)([^>]*)>([\s\S]*?)<\/script>/g)];
-
-const expected = inlineScripts.map(([, attrs, body]) => ({
-  attrs: attrs.trim() || '(no attributes)',
-  hash: `sha256-${createHash('sha256').update(body, 'utf8').digest('base64')}`,
-}));
+const expectedMap = new Map();
+for (const file of htmlFiles) {
+  const html = readFileSync(file, 'utf8');
+  const rel = relative(DIST_DIR, file);
+  for (const [, attrs, body] of html.matchAll(/<script(?![^>]*\ssrc=)([^>]*)>([\s\S]*?)<\/script>/g)) {
+    const hash = `sha256-${createHash('sha256').update(body, 'utf8').digest('base64')}`;
+    if (!expectedMap.has(hash)) expectedMap.set(hash, { attrs: attrs.trim() || '(no attributes)', files: [] });
+    expectedMap.get(hash).files.push(rel);
+  }
+}
+const expected = [...expectedMap.entries()].map(([hash, info]) => ({ hash, ...info }));
 
 const vercelRaw = readFileSync(VERCEL_PATH, 'utf8');
 const vercel = JSON.parse(vercelRaw);
@@ -60,15 +73,15 @@ if (/script-src[^;]*'unsafe-inline'/.test(cspEntry.value)) {
 const missing = expected.filter((script) => !cspEntry.value.includes(script.hash));
 
 if (missing.length === 0) {
-  console.log(`✓ All ${expected.length} inline script block(s) are allowlisted by hash.`);
-  for (const script of expected) console.log(`    ${script.hash}  ${script.attrs}`);
+  console.log(`✓ All ${expected.length} inline script block(s) across ${htmlFiles.length} HTML file(s) are allowlisted by hash.`);
+  for (const script of expected) console.log(`    ${script.hash}  ${script.files.join(', ')}`);
   process.exit(0);
 }
 
 if (!write) {
   console.error(`✗ ${missing.length} inline script block(s) are NOT allowlisted:\n`);
   for (const script of missing) {
-    console.error(`    ${script.attrs}`);
+    console.error(`    ${script.files.join(', ')}`);
     console.error(`    needs: ${script.hash}\n`);
   }
   console.error('Run: node tools/check-csp-hashes.mjs --write');

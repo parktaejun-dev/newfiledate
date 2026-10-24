@@ -1,0 +1,590 @@
+{
+  "siteUpdated": "2026-10-26",
+  "privacyUpdated": "2026-08-06",
+  "labels": {
+    "ko": {
+      "htmlLang": "ko",
+      "home": "홈",
+      "guides": "질문별 가이드",
+      "guidesDesc": "파일 날짜·EXIF·문서 작성일 변경에 대한 질문별 안내",
+      "indexH1": "질문별 가이드",
+      "answerLabel": "바로 답",
+      "faq": "자주 묻는 질문",
+      "related": "관련 질문",
+      "cta": "지금 바로 날짜 변경하기",
+      "ctaSub": "설치 없이 브라우저에서 바로 실행 · 무료",
+      "privacy": "개인정보처리방침",
+      "brand": "NewFileDate",
+      "tagline": "무설치 파일 날짜 변경 툴",
+      "updatedLabel": "기준일"
+    },
+    "en": {
+      "htmlLang": "en",
+      "home": "Home",
+      "guides": "Guides",
+      "guidesDesc": "Question-by-question guides to changing file dates, EXIF dates and document dates",
+      "indexH1": "Guides",
+      "answerLabel": "Quick answer",
+      "faq": "FAQ",
+      "related": "Related questions",
+      "cta": "Change file dates now",
+      "ctaSub": "Runs in your browser, no install · Free",
+      "privacy": "Privacy Policy",
+      "brand": "NewFileDate",
+      "tagline": "No-install file date changer",
+      "updatedLabel": "As of"
+    }
+  },
+  "guides": {
+    "file-created-date": {
+      "updated": "2026-10-26",
+      "ko": {
+        "q": "파일 생성일(만든 날짜) 바꾸는 법",
+        "desc": "설치 없이 브라우저에서 파일 생성일·수정일을 원하는 날짜로 바꾸는 방법. 파일이 서버로 전송되지 않는 로컬 처리 방식.",
+        "answer": "NewFileDate에 파일을 올리고 원하는 날짜를 고른 뒤 '일반 파일 날짜(OS)' 모드로 실행하면 끝입니다. 지정한 날짜가 적용된 파일을 ZIP으로 내려받으며, 모든 처리가 브라우저 안에서 일어나 파일이 서버로 전송되지 않습니다.",
+        "sections": [
+          {
+            "h": "이렇게 바꿉니다",
+            "list": [
+              "페이지 위의 도구에 파일을 드래그하거나 클릭해서 선택합니다 (여러 개 동시 가능)",
+              "'바꿀 날짜'에 원하는 생성일과 시각을 입력합니다 — 지금/어제/-1주일/-1개월/-1년 프리셋도 있습니다",
+              "'일반 파일 날짜 (OS)' 모드를 선택합니다",
+              "'날짜 변경 및 다운로드'를 누릅니다",
+              "내려받은 ZIP의 압축을 풀면 지정한 날짜가 찍힌 파일이 나옵니다"
+            ]
+          },
+          {
+            "h": "무엇이 어떻게 바뀌나",
+            "table": {
+              "head": ["바꾸려는 것", "모드", "처리 위치"],
+              "rows": [
+                ["파일 생성일·수정일 (모든 파일 형식)", "일반 파일 날짜 (OS)", "브라우저 로컬 — 서버 전송 없음"],
+                ["JPG/JPEG 사진 EXIF 촬영일자", "일반 파일 날짜 (OS)", "브라우저 로컬"],
+                ["HWP·PPTX·DOCX 문서 내부 작성일", "HWP/PPT 작성일 (Pro)", "서버 업로드 후 즉시 삭제 · 파일당 4.5MB"]
+              ]
+            }
+          },
+          {
+            "h": "알아둘 것",
+            "paras": [
+              "브라우저는 보안 정책상 디스크 안 파일의 날짜를 직접 수정할 수 없습니다. 그래서 NewFileDate는 새 날짜가 적용된 복사본을 ZIP으로 만들어 주며, 원본 파일은 그대로 둡니다.",
+              "초(second)는 ZIP 규격상 2초 단위로만 기록되어 짝수 초로 맞춰집니다. 표시상 최대 1초 차이가 날 수 있습니다.",
+              "1980년 1월 1일부터 2107년 12월 31일 사이의 날짜를 지정할 수 있습니다."
+            ]
+          }
+        ],
+        "faq": [
+          {
+            "q": "파일이 서버로 올라가나요?",
+            "a": "아니요. 일반 파일 날짜(OS) 모드는 파일 내용이 브라우저 메모리 안에서만 처리되어 어디에도 전송되지 않습니다. HWP/PPT(Pro) 모드만 문서를 서버로 보내고, 처리 직후 즉시 삭제합니다."
+          },
+          {
+            "q": "원본 파일 날짜가 바로 바뀌나요?",
+            "a": "원본은 그대로 두고 새 날짜가 적용된 복사본을 ZIP으로 내려받습니다. 원본까지 바꾸려면 압축 푼 파일로 교체하면 됩니다."
+          }
+        ],
+        "related": ["batch-file-date", "photo-exif-date", "newfiletime-alternative"]
+      },
+      "en": {
+        "q": "How to change a file's created date",
+        "desc": "Change a file's created and modified date in your browser — no install, and files never leave your device.",
+        "answer": "Drop your files into NewFileDate, pick the date you want, and run the 'File Date (OS)' mode. You get a ZIP with the new timestamps applied, and everything happens in your browser so nothing is uploaded.",
+        "sections": [
+          {
+            "h": "Steps",
+            "list": [
+              "Drop files into the tool above or click to select them (multiple files work)",
+              "Enter the target date and time — presets for now/yesterday/-1 week/-1 month/-1 year are available",
+              "Select 'File Date (OS)' mode",
+              "Click 'Apply Date & Download ZIP'",
+              "Extract the ZIP to get files stamped with your chosen date"
+            ]
+          },
+          {
+            "h": "What changes where",
+            "table": {
+              "head": ["What you want to change", "Mode", "Where it's processed"],
+              "rows": [
+                ["File created/modified date (any file type)", "File Date (OS)", "Local in your browser — nothing uploaded"],
+                ["JPG/JPEG photo EXIF capture date", "File Date (OS)", "Local in your browser"],
+                ["HWP·PPTX·DOCX document creation date", "HWP/PPT (Pro)", "Uploaded, edited, deleted immediately · 4.5MB per file"]
+              ]
+            }
+          },
+          {
+            "h": "Good to know",
+            "paras": [
+              "Browsers can't write file dates to your disk directly for security reasons, so NewFileDate produces a ZIP containing copies with the new timestamps. Your originals stay untouched.",
+              "Seconds are snapped to even values because the ZIP format only stores two-second resolution — at most a one-second display difference.",
+              "Dates between January 1, 1980 and December 31, 2107 are supported."
+            ]
+          }
+        ],
+        "faq": [
+          {
+            "q": "Are my files uploaded anywhere?",
+            "a": "No. In File Date (OS) mode, file contents are processed entirely in browser memory and never transmitted. Only HWP/PPT (Pro) mode sends the document to the server, and it is deleted right after processing."
+          },
+          {
+            "q": "Does the original file change in place?",
+            "a": "The original stays untouched — you download a ZIP of copies with the new date. Replace the originals with the extracted files if you want them updated."
+          }
+        ],
+        "related": ["batch-file-date", "photo-exif-date", "newfiletime-alternative"]
+      }
+    },
+    "photo-exif-date": {
+      "updated": "2026-10-26",
+      "ko": {
+        "q": "사진 촬영일자(EXIF) 변경하는 법",
+        "desc": "JPG 사진의 EXIF 촬영일자를 원하는 날짜로 바꾸는 방법. 설치 없이 브라우저에서 처리, 서버 전송 없음.",
+        "answer": "JPG 사진을 NewFileDate에 올리고 원하는 촬영일을 지정한 뒤 '일반 파일 날짜(OS)' 모드로 실행하면, EXIF의 촬영일자(DateTimeOriginal)와 파일 날짜가 함께 바뀐 사진을 ZIP으로 받습니다. 사진이 서버로 전송되지 않습니다.",
+        "sections": [
+          {
+            "h": "이렇게 바꿉니다",
+            "list": [
+              "JPG/JPEG 사진을 도구에 드래그합니다 (여러 장 동시 가능)",
+              "원하는 촬영일과 시각을 입력합니다",
+              "'일반 파일 날짜 (OS)' 모드로 실행합니다",
+              "ZIP을 내려받아 압축을 풉니다 — 파일 날짜와 EXIF 촬영일이 모두 바뀌어 있습니다"
+            ]
+          },
+          {
+            "h": "정확히 뭐가 바뀌나",
+            "paras": [
+              "사진 파일의 EXIF 메타데이터 안에 있는 촬영일자(DateTime·DateTimeOriginal·DateTimeDigitized)가 지정한 시각으로 다시 쓰입니다. 갤러리·사진 앱이 정렬에 쓰는 값이 바로 이것입니다.",
+              "EXIF 기록이 아예 없는 사진(스크린샷, 메신저로 받은 사진 등)은 촬영일자를 새로 만들 수 없어 파일 날짜만 바뀝니다. 이런 사진이 몇 장인지는 처리 후 안내 문구로 알려줍니다.",
+              "HEIC, PNG 등 JPG/JPEG이 아닌 형식은 EXIF 수정 대상이 아니며 파일 날짜만 변경됩니다."
+            ]
+          },
+          {
+            "h": "개인정보",
+            "paras": [
+              "사진은 브라우저 메모리 안에서만 처리됩니다. 어떤 서버로도 업로드되지 않으므로, 민감한 사진의 EXIF를 편집해도 사진이 기기 밖으로 나가지 않습니다."
+            ]
+          }
+        ],
+        "faq": [
+          {
+            "q": "EXIF가 없는 사진은 어떻게 되나요?",
+            "a": "촬영일자 자체가 없는 사진에는 새 EXIF를 만들어 넣지 않고 파일 날짜만 변경합니다. 처리가 끝나면 '사진 N장 중 M장은 EXIF가 없어 파일 날짜만 변경'이라고 안내합니다."
+          },
+          {
+            "q": "HEIC나 PNG도 되나요?",
+            "a": "EXIF 재작성은 JPG/JPEG만 지원합니다. HEIC·PNG는 파일 생성일·수정일만 변경됩니다."
+          }
+        ],
+        "related": ["file-created-date", "batch-file-date", "hwp-created-date"]
+      },
+      "en": {
+        "q": "How to change a photo's EXIF date",
+        "desc": "Change the EXIF capture date of JPG photos to any date — in your browser, no install, nothing uploaded.",
+        "answer": "Drop JPG photos into NewFileDate, set the capture date you want, and run 'File Date (OS)' mode. You'll get a ZIP where both the file date and the EXIF capture time (DateTimeOriginal) are updated — without uploading your photos anywhere.",
+        "sections": [
+          {
+            "h": "Steps",
+            "list": [
+              "Drop JPG/JPEG photos into the tool (batch works)",
+              "Enter the capture date and time you want",
+              "Run 'File Date (OS)' mode",
+              "Download and extract the ZIP — both file date and EXIF capture date are updated"
+            ]
+          },
+          {
+            "h": "What exactly changes",
+            "paras": [
+              "The capture timestamps inside the photo's EXIF metadata (DateTime, DateTimeOriginal, DateTimeDigitized) are rewritten to your chosen time — the same values gallery and photo apps sort by.",
+              "Photos with no EXIF record at all (screenshots, messenger downloads) can't get a new capture date, so only their file date changes. You'll see a notice after processing telling you how many were skipped.",
+              "Formats other than JPG/JPEG (HEIC, PNG, etc.) only get their file date changed — their EXIF is not edited."
+            ]
+          },
+          {
+            "h": "Privacy",
+            "paras": [
+              "Photos are processed in browser memory only — never uploaded. You can edit EXIF data of sensitive photos without them leaving your device."
+            ]
+          }
+        ],
+        "faq": [
+          {
+            "q": "What about photos with no EXIF data?",
+            "a": "A capture date can't be created where none exists, so only the file date is changed. After processing you'll see how many of the photos had no EXIF timestamp."
+          },
+          {
+            "q": "Does it work for HEIC or PNG?",
+            "a": "EXIF rewriting is supported for JPG/JPEG only. HEIC and PNG files get their file created/modified date changed, not the internal capture date."
+          }
+        ],
+        "related": ["file-created-date", "batch-file-date", "hwp-created-date"]
+      }
+    },
+    "hwp-created-date": {
+      "updated": "2026-10-26",
+      "ko": {
+        "q": "한글(HWP) 파일 작성일 수정하는 법",
+        "desc": "한글 HWP 문서의 내부 메타데이터 작성일을 바꾸는 방법. 파일 날짜와 문서 속성 작성일의 차이 설명 포함.",
+        "answer": "한글 파일을 NewFileDate에 올리고 'HWP/PPT 작성일 (Pro)' 모드를 선택한 뒤 원하는 날짜로 실행하면, 문서 내부 메타데이터의 작성일이 바뀐 파일을 받습니다. 문서 속성(정보)에서 보이는 작성일이 바뀌는 방식입니다.",
+        "sections": [
+          {
+            "h": "이렇게 바꿉니다",
+            "list": [
+              "HWP 파일을 도구에 올립니다",
+              "원하는 작성일을 입력합니다",
+              "'HWP/PPT 작성일 (Pro)' 모드를 선택합니다 — 문서 내부 작성일을 바꾸는 모드입니다",
+              "실행하면 수정된 파일을 내려받습니다"
+            ]
+          },
+          {
+            "h": "두 가지 '날짜'의 차이",
+            "paras": [
+              "파일에는 두 종류의 날짜가 있습니다. 탐색기·Finder에 보이는 '파일 생성일/수정일'은 운영체제가 기록하는 값이고, 문서를 열었을 때 '문서 정보·속성'에 보이는 '작성일'은 파일 안쪽 메타데이터에 적힌 값입니다.",
+              "파일 날짜만 바꾸는 일반 모드로는 문서 속성의 작성일이 바뀌지 않습니다. HWP 작성일을 바꾸려면 문서 내부를 편집하는 Pro 모드를 써야 합니다."
+            ]
+          },
+          {
+            "h": "알아둘 것",
+            "paras": [
+              "Pro 모드는 문서를 서버로 전송해 메타데이터를 수정한 뒤 즉시 삭제합니다. 파일당 4.5MB까지 지원되며, 저장하지 않습니다.",
+              "지원 형식은 HWP, PPTX, DOCX, JPG/JPEG입니다. 그 외 형식은 일반 파일 날짜(OS) 모드로 파일 날짜만 바꿀 수 있습니다."
+            ]
+          }
+        ],
+        "faq": [
+          {
+            "q": "문서가 서버로 올라가는데 안전한가요?",
+            "a": "메타데이터를 고치려면 파일 내부를 편집해야 해서 Pro 모드는 문서를 서버로 전송합니다. 처리가 끝나는 즉시 삭제되며 디스크에 저장되지 않습니다. 업로드 자체가 걱정되면 파일 날짜만 바꾸는 로컬 모드를 쓰면 됩니다."
+          },
+          {
+            "q": "5MB 넘는 한글 파일은요?",
+            "a": "Pro 모드는 Vercel 서버리스 제한상 파일당 4.5MB까지 지원합니다. 더 큰 파일은 파일 생성일·수정일만 바꾸는 일반 모드(용량 제한 없음)를 이용해 주세요."
+          }
+        ],
+        "related": ["office-doc-date", "file-created-date", "batch-file-date"]
+      },
+      "en": {
+        "q": "How to change an HWP document's creation date",
+        "desc": "Edit the creation date stored inside a Korean HWP document's metadata — and how that differs from the file date.",
+        "answer": "Upload the HWP file to NewFileDate, choose 'HWP/PPT (Pro)' mode, and run it with your target date. The creation date inside the document's metadata — the one shown in document properties — is what gets changed.",
+        "sections": [
+          {
+            "h": "Steps",
+            "list": [
+              "Drop the HWP file into the tool",
+              "Enter the creation date you want",
+              "Select 'HWP/PPT (Pro)' mode — this is the mode that edits internal document metadata",
+              "Run it and download the modified file"
+            ]
+          },
+          {
+            "h": "Two kinds of 'date'",
+            "paras": [
+              "A file carries two kinds of dates. The 'created/modified date' in your file manager is recorded by the operating system, while the 'creation date' in document properties lives inside the file's metadata.",
+              "Changing the file date with standard mode does not touch the document's internal creation date. To change what HWP shows as its creation date, you need Pro mode, which edits the metadata inside the file."
+            ]
+          },
+          {
+            "h": "Good to know",
+            "paras": [
+              "Pro mode uploads the document to edit its metadata, then deletes it immediately — nothing is stored. Up to 4.5MB per file.",
+              "Supported formats for Pro mode: HWP, PPTX, DOCX, JPG/JPEG. Other formats can still get their file date changed via File Date (OS) mode."
+            ]
+          }
+        ],
+        "faq": [
+          {
+            "q": "Is it safe that the document is uploaded?",
+            "a": "Editing internal metadata requires modifying the file's contents, so Pro mode uploads the document, processes it, and deletes it immediately — nothing is written to disk. If you'd rather not upload at all, use the local File Date (OS) mode, which only changes the file date."
+          },
+          {
+            "q": "What about HWP files over 4.5MB?",
+            "a": "Pro mode is limited to 4.5MB per file (serverless limit). For larger files, use File Date (OS) mode, which has no size limit but only changes the file's created/modified date."
+          }
+        ],
+        "related": ["office-doc-date", "file-created-date", "batch-file-date"]
+      }
+    },
+    "office-doc-date": {
+      "updated": "2026-10-26",
+      "ko": {
+        "q": "PPT·워드 파일 작성일 바꾸는 법",
+        "desc": "PPTX·DOCX 문서의 내부 메타데이터 작성일을 변경하는 방법. 지원 형식과 용량 제한 안내.",
+        "answer": "PPTX나 DOCX 파일을 NewFileDate에 올리고 'HWP/PPT 작성일 (Pro)' 모드로 실행하면 문서 속성의 작성일이 바뀝니다. 파일당 4.5MB까지 지원하며, 문서는 처리 후 즉시 삭제됩니다.",
+        "sections": [
+          {
+            "h": "이렇게 바꿉니다",
+            "list": [
+              "PPTX 또는 DOCX 파일을 도구에 올립니다",
+              "원하는 작성일을 입력합니다",
+              "'HWP/PPT 작성일 (Pro)' 모드를 선택합니다",
+              "실행 후 수정된 파일을 내려받습니다 — 문서 정보에서 작성일이 바뀐 것을 확인할 수 있습니다"
+            ]
+          },
+          {
+            "h": "형식별 지원",
+            "table": {
+              "head": ["형식", "문서 내부 작성일 (Pro)", "파일 날짜 (일반 모드)"],
+              "rows": [
+                ["PPTX (파워포인트)", "지원", "지원"],
+                ["DOCX (워드)", "지원", "지원"],
+                ["HWP (한글)", "지원", "지원"],
+                ["XLSX (엑셀)", "미지원", "지원"],
+                ["PDF", "미지원", "지원"],
+                ["JPG/JPEG", "지원 (EXIF)", "지원"]
+              ]
+            }
+          },
+          {
+            "h": "알아둘 것",
+            "paras": [
+              "Pro 모드는 문서를 서버로 전송해 내부 메타데이터를 편집한 뒤 즉시 삭제합니다. 파일당 4.5MB까지입니다.",
+              "엑셀(XLSX)과 PDF는 문서 내부 작성일 편집을 지원하지 않습니다. 이 형식들은 일반 파일 날짜(OS) 모드로 파일 생성일·수정일만 바꿀 수 있습니다."
+            ]
+          }
+        ],
+        "faq": [
+          {
+            "q": "엑셀 파일 작성일은 안 바뀌나요?",
+            "a": "XLSX는 현재 문서 내부 작성일 편집을 지원하지 않습니다. 탐색기에 보이는 파일 생성일·수정일은 일반 모드로 바꿀 수 있습니다."
+          },
+          {
+            "q": "문서 속성의 '수정일'도 바뀌나요?",
+            "a": "메타데이터의 날짜 필드가 지정한 시각으로 함께 수정됩니다. 파일 자체의 생성일·수정일도 같은 날짜로 맞추려면 일반 모드를 함께 이용하면 됩니다."
+          }
+        ],
+        "related": ["hwp-created-date", "file-created-date", "batch-file-date"]
+      },
+      "en": {
+        "q": "How to change PPTX/DOCX document dates",
+        "desc": "Change the creation date stored inside PowerPoint and Word document metadata — supported formats and limits.",
+        "answer": "Upload your PPTX or DOCX to NewFileDate and run 'HWP/PPT (Pro)' mode with your target date — the creation date in the document's properties will be updated. Up to 4.5MB per file, and the document is deleted right after processing.",
+        "sections": [
+          {
+            "h": "Steps",
+            "list": [
+              "Drop the PPTX or DOCX file into the tool",
+              "Enter the creation date you want",
+              "Select 'HWP/PPT (Pro)' mode",
+              "Run it and download — check the new date in document properties"
+            ]
+          },
+          {
+            "h": "Format support",
+            "table": {
+              "head": ["Format", "Internal document date (Pro)", "File date (standard mode)"],
+              "rows": [
+                ["PPTX (PowerPoint)", "Supported", "Supported"],
+                ["DOCX (Word)", "Supported", "Supported"],
+                ["HWP (Hangul)", "Supported", "Supported"],
+                ["XLSX (Excel)", "Not supported", "Supported"],
+                ["PDF", "Not supported", "Supported"],
+                ["JPG/JPEG", "Supported (EXIF)", "Supported"]
+              ]
+            }
+          },
+          {
+            "h": "Good to know",
+            "paras": [
+              "Pro mode uploads the document, edits its internal metadata, and deletes it immediately. Up to 4.5MB per file.",
+              "Excel (XLSX) and PDF are not supported for internal document-date editing. For those formats, standard File Date (OS) mode changes the file's created/modified date only."
+            ]
+          }
+        ],
+        "faq": [
+          {
+            "q": "Can't I change an Excel file's creation date?",
+            "a": "XLSX is not currently supported for internal document-date editing. Standard mode can still change the created/modified date shown in your file manager."
+          },
+          {
+            "q": "Does the 'modified date' in properties change too?",
+            "a": "The metadata date fields are updated to your chosen time. To match the file's own created/modified dates as well, you can also run standard mode."
+          }
+        ],
+        "related": ["hwp-created-date", "file-created-date", "batch-file-date"]
+      }
+    },
+    "newfiletime-alternative": {
+      "updated": "2026-10-26",
+      "ko": {
+        "q": "NewFileTime 대체 프로그램 (무설치 웹 버전)",
+        "desc": "NewFileTime처럼 파일 날짜를 바꾸되, 설치 없이 브라우저에서 동작하는 대안. 설치형과 웹 방식의 차이 비교.",
+        "answer": "NewFileTime 같은 설치형 프로그램 없이 NewFileDate를 쓰면 브라우저에서 바로 파일 날짜를 바꿀 수 있습니다. 파일을 올리고 날짜를 고르면 새 날짜가 적용된 ZIP을 내려받는 방식이라 설치·회원가입·광고가 없고, 맥·리눅스에서도 동작합니다.",
+        "sections": [
+          {
+            "h": "설치형과 웹 방식 비교",
+            "table": {
+              "head": ["", "NewFileTime (설치형)", "NewFileDate (웹)"],
+              "rows": [
+                ["설치", "필요 (Windows 전용)", "불필요 — 브라우저만 있으면 됨"],
+                ["운영체제", "Windows", "Windows·macOS·Linux·모바일"],
+                ["처리 방식", "디스크의 파일 날짜를 직접 수정", "새 날짜가 적용된 ZIP을 내려받음"],
+                ["EXIF 촬영일 변경", "미지원", "JPG/JPEG 지원"],
+                ["문서 내부 작성일", "미지원", "HWP·PPTX·DOCX 지원 (Pro)"],
+                ["파일 전송", "없음", "일반 모드는 전송 없음 (로컬 처리)"]
+              ]
+            }
+          },
+          {
+            "h": "이렇게 바꿉니다",
+            "list": [
+              "NewFileDate에 파일을 올립니다",
+              "원하는 날짜를 입력합니다",
+              "'일반 파일 날짜 (OS)' 모드로 실행합니다",
+              "내려받은 ZIP을 풀면 날짜가 바뀐 파일이 나옵니다"
+            ]
+          },
+          {
+            "h": "어떤 방식을 고를까",
+            "paras": [
+              "원본 파일의 날짜를 그 자리에서 직접 바꿔야 한다면 설치형 도구가 맞습니다. 브라우저는 보안상 디스크 파일을 직접 수정할 수 없기 때문입니다.",
+              "반대로 설치가 어려운 환경(회사 PC, 맥, 공용 컴퓨터)이거나 EXIF 촬영일·문서 작성일까지 함께 바꿔야 한다면 NewFileDate가 간단합니다."
+            ]
+          }
+        ],
+        "faq": [
+          {
+            "q": "웹인데 파일이 업로드되지 않는다고요?",
+            "a": "네. 일반 모드는 파일을 브라우저 메모리에서 읽어 새 날짜가 적용된 ZIP을 만들 뿐, 네트워크로 전송하지 않습니다. 개발자 도구의 네트워크 탭으로 직접 확인해 볼 수 있습니다."
+          },
+          {
+            "q": "원본 파일을 직접 바꾸고 싶으면요?",
+            "a": "브라우저는 디스크 쓰기 권한이 없어 원본을 직접 수정하지 못합니다. ZIP의 파일로 원본을 교체하거나, 원본 직접 수정이 꼭 필요하면 설치형 도구를 쓰는 게 맞습니다."
+          }
+        ],
+        "related": ["file-created-date", "batch-file-date", "photo-exif-date"]
+      },
+      "en": {
+        "q": "NewFileTime alternative that runs in your browser",
+        "desc": "A no-install, browser-based alternative to NewFileTime for changing file dates — works on Mac and Linux too.",
+        "answer": "NewFileDate lets you change file dates right in the browser — no installer like NewFileTime needed. Upload files, pick a date, and download a ZIP with the new timestamps. No install, no signup, and it works on Mac and Linux too.",
+        "sections": [
+          {
+            "h": "Installed tool vs. web tool",
+            "table": {
+              "head": ["", "NewFileTime (installed)", "NewFileDate (web)"],
+              "rows": [
+                ["Install", "Required (Windows only)", "None — just a browser"],
+                ["OS", "Windows", "Windows·macOS·Linux·mobile"],
+                ["How it works", "Edits file dates on disk directly", "Downloads a ZIP with new timestamps"],
+                ["EXIF capture date", "Not supported", "Supported (JPG/JPEG)"],
+                ["Internal document date", "Not supported", "HWP·PPTX·DOCX (Pro mode)"],
+                ["File upload", "None", "None in standard mode (local processing)"]
+              ]
+            }
+          },
+          {
+            "h": "Steps",
+            "list": [
+              "Drop files into NewFileDate",
+              "Enter the date you want",
+              "Run 'File Date (OS)' mode",
+              "Extract the downloaded ZIP to get files with the new date"
+            ]
+          },
+          {
+            "h": "Which should you use",
+            "paras": [
+              "If you must change the original files' dates in place on disk, an installed tool is the right choice — browsers simply aren't allowed to write to your disk.",
+              "If you're on a work PC without install rights, a Mac, or a shared computer — or you also need EXIF capture dates and document creation dates changed — NewFileDate is simpler."
+            ]
+          }
+        ],
+        "faq": [
+          {
+            "q": "It's a website but files aren't uploaded?",
+            "a": "Correct. Standard mode reads files into browser memory and builds a ZIP with new timestamps — nothing goes over the network. You can verify it yourself in your browser's developer tools Network tab."
+          },
+          {
+            "q": "What if I need the originals changed in place?",
+            "a": "Browsers have no write access to your disk, so the originals can't be modified directly. Replace them with the extracted files, or use an installed tool when in-place editing is a must."
+          }
+        ],
+        "related": ["file-created-date", "batch-file-date", "photo-exif-date"]
+      }
+    },
+    "batch-file-date": {
+      "updated": "2026-10-26",
+      "ko": {
+        "q": "여러 파일 날짜 한 번에 바꾸는 법 (일괄 변경)",
+        "desc": "여러 파일의 생성일·수정일을 한 번에 같은 날짜로 일괄 변경하는 방법. 사진 EXIF 일괄 처리 포함.",
+        "answer": "NewFileDate에 파일을 여러 개 한꺼번에 올리면 됩니다. 하나의 날짜를 지정해 실행하면 모든 파일에 같은 날짜가 적용된 ZIP 하나로 내려받습니다. JPG 사진은 EXIF 촬영일까지 일괄로 바뀝니다.",
+        "sections": [
+          {
+            "h": "이렇게 바꿉니다",
+            "list": [
+              "폴더에서 파일을 여러 개 선택해 한꺼번에 드래그합니다 (파일 개수 제한 없음)",
+              "적용할 날짜·시각을 하나 지정합니다",
+              "'일반 파일 날짜 (OS)' 모드로 실행합니다",
+              "모든 파일이 같은 날짜로 바뀐 ZIP 하나를 내려받습니다"
+            ]
+          },
+          {
+            "h": "일괄 처리 규칙",
+            "paras": [
+              "모든 파일에 같은 날짜가 적용됩니다. 파일마다 다른 날짜를 주려면 날짜별로 나눠서 실행하면 됩니다.",
+              "같은 이름의 파일이 여러 개 있으면 덮어쓰기를 피하려고 자동으로 _1, _2를 붙여 저장하며, 어떤 파일이 이름을 바꿨는지 처리 후 안내합니다.",
+              "일반 모드는 용량 제한이 없습니다. Pro 모드(HWP/PPT 작성일)는 파일당 4.5MB 제한이 있습니다."
+            ]
+          },
+          {
+            "h": "처리 위치",
+            "paras": [
+              "일괄 처리도 브라우저 안에서 일어납니다. 파일이 수십 개여도 서버로 전송되지 않고, JPG 사진의 EXIF 촬영일까지 같은 날짜로 일괄 재작성됩니다."
+            ]
+          }
+        ],
+        "faq": [
+          {
+            "q": "파일마다 다른 날짜를 줄 수 있나요?",
+            "a": "한 번 실행에는 하나의 날짜가 적용됩니다. 다른 날짜가 필요한 파일끼리 묶어서 여러 번 실행하면 됩니다."
+          },
+          {
+            "q": "몇 개까지 한 번에 되나요?",
+            "a": "개수 제한은 없지만 브라우저 메모리 안에서 처리하므로 아주 큰 파일을 수백 개씩 올리면 기기 메모리에 따라 느려질 수 있습니다. 그럴 땐 나눠서 실행하세요."
+          }
+        ],
+        "related": ["file-created-date", "photo-exif-date", "hwp-created-date"]
+      },
+      "en": {
+        "q": "How to batch change file dates",
+        "desc": "Set the created/modified date of many files at once — including batch EXIF capture-date editing for photos.",
+        "answer": "Just drop multiple files into NewFileDate at once. Set one date, run it, and download a single ZIP where every file carries that timestamp. JPG photos get their EXIF capture date updated in the same batch.",
+        "sections": [
+          {
+            "h": "Steps",
+            "list": [
+              "Select multiple files and drop them in all at once (no file-count limit)",
+              "Enter the single date and time to apply",
+              "Run 'File Date (OS)' mode",
+              "Download one ZIP with every file re-dated"
+            ]
+          },
+          {
+            "h": "Batch rules",
+            "paras": [
+              "The same date is applied to every file. For different dates, split the files and run once per date.",
+              "If several files share a name, duplicates are auto-renamed with _1, _2 suffixes to avoid overwriting — you'll get a notice listing which files were renamed.",
+              "Standard mode has no size limit. Pro mode (HWP/PPT document dates) is limited to 4.5MB per file."
+            ]
+          },
+          {
+            "h": "Where it runs",
+            "paras": [
+              "Batch processing also happens inside your browser. Dozens of files never touch a server, and JPG EXIF capture dates are rewritten in the same pass."
+            ]
+          }
+        ],
+        "faq": [
+          {
+            "q": "Can I set a different date per file?",
+            "a": "One run applies one date to everything. Group files by target date and run multiple times."
+          },
+          {
+            "q": "How many files at once?",
+            "a": "There's no count limit, but everything is processed in browser memory, so hundreds of very large files may slow things down depending on your device. Split the batch if needed."
+          }
+        ],
+        "related": ["file-created-date", "photo-exif-date", "hwp-created-date"]
+      }
+    }
+  }
+}

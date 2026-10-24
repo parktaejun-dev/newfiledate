@@ -31,6 +31,9 @@ export interface TranslationDictionary {
   exifSkippedMsg: (skipped: number, total: number) => string;
   unsupportedForTrackB: (names: string[]) => string;
   genericErrorMsg: string;
+  faqTitle: string;
+  faqItems: { q: string; a: string }[];
+  footerGuides: string;
 }
 
 export const translations: Record<Language, TranslationDictionary> = {
@@ -66,6 +69,26 @@ export const translations: Record<Language, TranslationDictionary> = {
     unsupportedForTrackB: (names) =>
       `Pro mode only supports HWP, PPTX, DOCX and JPEG. Use File Date (OS) mode for: ${names.join(', ')}`,
     genericErrorMsg: 'Processing failed. Please try again.',
+    faqTitle: 'FAQ',
+    faqItems: [
+      {
+        q: 'Are my files uploaded to a server?',
+        a: 'In File Date (OS) mode, files are processed entirely in your browser memory and never leave your device. Only HWP/PPT (Pro) mode uploads the document for metadata editing, and it is deleted immediately after processing.'
+      },
+      {
+        q: 'How do I receive the modified files?',
+        a: 'Browsers cannot write file dates to your disk directly, so you download a ZIP containing the files with the new timestamps. Extracting the ZIP gives you files with the created/modified date you set.'
+      },
+      {
+        q: 'Does it change the photo EXIF capture date?',
+        a: 'For JPG/JPEG photos, the EXIF capture time (DateTimeOriginal) is rewritten to the same timestamp along with the file date. Photos without EXIF data only get their file date changed.'
+      },
+      {
+        q: 'Is it free?',
+        a: 'Yes. Both File Date (OS) mode and HWP/PPT (Pro) mode are free. Pro mode supports up to 4.5MB per file.'
+      }
+    ],
+    footerGuides: 'Guides',
   },
   ko: {
     brandSubtitle: '날짜 수정 툴',
@@ -99,6 +122,26 @@ export const translations: Record<Language, TranslationDictionary> = {
     unsupportedForTrackB: (names) =>
       `Pro 모드는 HWP, PPTX, DOCX, JPEG만 지원합니다. 다음 파일은 '일반 파일 날짜(OS)' 모드를 이용해 주세요: ${names.join(', ')}`,
     genericErrorMsg: '처리에 실패했습니다. 다시 시도해 주세요.',
+    faqTitle: '자주 묻는 질문',
+    faqItems: [
+      {
+        q: '파일이 서버로 전송되나요?',
+        a: '일반 파일 날짜(OS) 모드는 파일이 브라우저 메모리 안에서만 처리되어 서버로 전송되지 않습니다. HWP/PPT 작성일(Pro) 모드만 메타데이터 수정을 위해 문서를 서버로 전송하며, 처리 직후 즉시 삭제됩니다.'
+      },
+      {
+        q: '변경된 파일은 어떻게 받나요?',
+        a: '브라우저는 보안 정책상 디스크의 파일 날짜를 직접 바꿀 수 없어, 새 날짜가 적용된 파일을 ZIP으로 내려받습니다. 압축을 풀면 지정한 생성일·수정일이 적용된 파일이 나옵니다.'
+      },
+      {
+        q: '사진 EXIF 촬영일자도 바뀌나요?',
+        a: 'JPG/JPEG 사진은 파일 날짜와 함께 EXIF의 촬영일자(DateTimeOriginal)도 같은 시각으로 변경됩니다. EXIF 정보가 없는 사진은 파일 날짜만 변경됩니다.'
+      },
+      {
+        q: '무료인가요?',
+        a: '네. 일반 파일 날짜 모드와 HWP/PPT 작성일(Pro) 모드 모두 무료입니다. Pro 모드는 파일당 4.5MB까지 지원합니다.'
+      }
+    ],
+    footerGuides: '질문별 가이드',
   },
 };
 

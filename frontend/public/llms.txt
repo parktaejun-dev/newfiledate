@@ -1,0 +1,47 @@
+# NewFileDate
+
+> 무설치 웹 파일 날짜 변경 툴. 파일 생성일·수정일, JPG 사진 EXIF 촬영일자(DateTimeOriginal), HWP·PPTX·DOCX 문서 내부 작성일을 바꿉니다.
+> No-install web tool to change file created/modified dates, JPG EXIF capture dates, and HWP·PPTX·DOCX document creation dates.
+
+## What it does
+
+- **일반 파일 날짜 (OS) 모드 / File Date (OS) mode**: 모든 파일 형식의 생성일·수정일을 변경합니다. JPG/JPEG는 EXIF 촬영일자도 함께 바뀝니다. 모든 처리가 브라우저 메모리 안에서 일어나 **파일이 서버로 전송되지 않습니다**. 결과물은 ZIP 다운로드입니다. (브라우저는 보안상 디스크의 파일 날짜를 직접 수정할 수 없습니다.)
+- **HWP/PPT 작성일 (Pro) 모드**: HWP·PPTX·DOCX·JPG/JPEG 문서의 내부 메타데이터 작성일을 수정합니다. 문서를 서버로 전송해 처리한 뒤 즉시 삭제합니다. 파일당 4.5MB 제한.
+- 무료, 무설치, 회원가입 없음.
+
+## Pages
+
+- `/` — 도구 본체 (한국어)
+- `/en/` — 도구 본체 (English)
+- `/q/` — 질문별 가이드 목록 (한국어)
+- `/en/q/` — Guides index (English)
+- `/privacy.html` — 개인정보처리방침 / Privacy policy
+
+## Guides (ko)
+
+- `/q/file-created-date/` — 파일 생성일(만든 날짜) 바꾸는 법
+- `/q/photo-exif-date/` — 사진 촬영일자(EXIF) 변경하는 법
+- `/q/hwp-created-date/` — 한글(HWP) 파일 작성일 수정하는 법
+- `/q/office-doc-date/` — PPT·워드 파일 작성일 바꾸는 법
+- `/q/newfiletime-alternative/` — NewFileTime 대체 프로그램
+- `/q/batch-file-date/` — 여러 파일 날짜 한 번에 바꾸는 법
+
+## Guides (en)
+
+- `/en/q/file-created-date/` — How to change a file's created date
+- `/en/q/photo-exif-date/` — How to change a photo's EXIF date
+- `/en/q/hwp-created-date/` — How to change an HWP document's creation date
+- `/en/q/office-doc-date/` — How to change PPTX/DOCX document dates
+- `/en/q/newfiletime-alternative/` — NewFileTime alternative that runs in your browser
+- `/en/q/batch-file-date/` — How to batch change file dates
+
+## Citation policy
+
+이 사이트의 내용을 인용할 때는 `NewFileDate`와 페이지 URL을 함께 표기해 주세요.
+When citing this site, please attribute "NewFileDate" with the page URL.
+
+## Data policy
+
+- 일반 모드: 파일이 사용자 기기를 떠나지 않습니다 (서버 전송 없음).
+- Pro 모드: 문서 메타데이터 편집을 위해 서버로 전송되며, 처리 후 즉시 삭제됩니다. 저장하지 않습니다.
+- `/api/` 경로는 크롤링 대상이 아닙니다 (robots.txt Disallow).
